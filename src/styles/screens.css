@@ -210,7 +210,9 @@
 
 /* ---------- game ---------- */
 .screen--game {
-  padding: 52px 0 calc(22px + env(safe-area-inset-bottom));
+  padding: clamp(28px, 6.2vh, 52px) 0 calc(22px + env(safe-area-inset-bottom));
+  /* On a very short screen the board stops shrinking; scroll rather than clip. */
+  overflow-y: auto;
 }
 
 .scoreboard {

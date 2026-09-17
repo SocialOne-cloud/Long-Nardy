@@ -456,7 +456,7 @@
 }
 
 .checker__initial {
-  font: 600 12px var(--font-body);
+  font: 600 clamp(9px, calc(var(--checker) * 0.43), 12px) var(--font-body);
   line-height: 1;
 }
 

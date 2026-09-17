@@ -87,11 +87,17 @@
   --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
 
   /* ---- board metrics ---- */
-  --point-h: clamp(150px, 22.5vh, 190px);
-  --checker: 28px;
+  /*
+   * The board takes whatever height the fixed chrome leaves it: roughly
+   * 430px goes to the scoreboard, turn pill, pips and the control card, and
+   * the two rows of points split the rest. Checkers and their overlap follow
+   * the point height so a stack of five always fits.
+   */
+  --point-h: clamp(92px, calc((100dvh - 430px) / 2), 190px);
+  --checker: clamp(19px, calc(var(--point-h) * 0.147), 28px);
   --checker-rim: 3px;
-  --checker-overlap: -15px;
-  --stack-pad: 26px;
+  --checker-overlap: calc(var(--checker) * -0.54);
+  --stack-pad: clamp(9px, calc(var(--point-h) * 0.137), 26px);
   --tray-w: 36px;
 
   /* ---- motion ---- */
