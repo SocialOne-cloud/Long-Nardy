@@ -251,6 +251,23 @@ export function legalTargetsFrom(state: GameState, from: number): Map<MoveTarget
   return out;
 }
 
+/**
+ * Destinations this checker could otherwise reach that are refused only
+ * because they would close a six-block. Used to explain the refusal.
+ */
+export function blockRuleRejections(state: GameState, from: number): MoveTarget[] {
+  const ctx = ctxOf(state);
+  const out: MoveTarget[] = [];
+  const tried = new Set<number>();
+  for (const die of remainingValues(state)) {
+    if (tried.has(die)) continue;
+    tried.add(die);
+    const to = destinationFor(ctx, from, die);
+    if (to !== null && advance(ctx, from, to) === null) out.push(to);
+  }
+  return out;
+}
+
 /** Points this player can legally move from. */
 export function movableSources(state: GameState): number[] {
   const seen = new Set<number>();

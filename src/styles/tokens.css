@@ -1,0 +1,108 @@
+/*
+ * Design tokens from the handoff. Everything the UI paints with is declared
+ * here so the palette can be retuned in one place.
+ */
+:root {
+  /* ---- colour ---- */
+  --bg-deep: #1e0f2e;
+  --bg-deeper: #150a20;
+  --plum: #3a1d52;
+  --plum-deep: #26133a;
+  --velvet: #4b2a6b;
+  --velvet-lit: #5a3380;
+  --point-lavender: #b79ce0;
+  --point-orchid: #8e4fb8;
+  --purple-600: #6b3fa0;
+  --gold: #e8c872;
+  --ivory: #f6f0fa;
+  --amethyst: #5a2a82;
+  --lilac: #d9b8ff;
+  --text-muted: #c9b4de;
+  --text-dim: #8e7ba6;
+  --text-disabled: #6e5c86;
+  --online: #7be0a8;
+  --danger: #e0a8a8;
+  --ink-on-gold: #2a1440;
+  --ink-soft: #f0e6f8;
+
+  /* ---- surfaces and borders ---- */
+  --surface-card: rgba(75, 42, 107, 0.55);
+  --surface-card-2: rgba(58, 29, 82, 0.6);
+  --surface-field: rgba(75, 42, 107, 0.5);
+  --surface-well: rgba(30, 15, 46, 0.75);
+  --scrim: rgba(21, 10, 32, 0.62);
+  --scrim-deep: rgba(21, 10, 32, 0.72);
+  --border-rest: rgba(183, 156, 224, 0.22);
+  --border-soft: rgba(183, 156, 224, 0.18);
+  --border-divider: rgba(183, 156, 224, 0.14);
+  --border-accent: rgba(232, 200, 114, 0.4);
+  --border-accent-strong: rgba(232, 200, 114, 0.55);
+
+  /* ---- gradients ---- */
+  --app-bg: radial-gradient(120% 55% at 50% 0%, #3a1d52 0%, #1e0f2e 60%);
+  --surface-felt: radial-gradient(150% 110% at 30% 0%, #5a3380, #4b2a6b 72%);
+  --primary-btn: linear-gradient(180deg, #8e4fb8, #6b3fa0);
+  --win-bg: radial-gradient(110% 60% at 50% 12%, #5a2a82 0%, #1e0f2e 64%);
+  --avatar-p1: linear-gradient(140deg, #e8c872, #8e4fb8);
+  --avatar-p2: linear-gradient(140deg, #d9b8ff, #5a2a82);
+  --avatar-win: linear-gradient(140deg, #e8c872, #d9b8ff);
+  --gold-fade: linear-gradient(90deg, transparent, rgba(232, 200, 114, 0.5), transparent);
+  --die-face: linear-gradient(160deg, #4b2a6b, #3a1d52);
+  --felt-noise: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.028) 0 2px,
+    transparent 2px 5px
+  );
+
+  /* ---- shadows ---- */
+  --shadow-frame: 0 26px 60px rgba(0, 0, 0, 0.6);
+  --shadow-board: 0 14px 30px rgba(0, 0, 0, 0.5);
+  --shadow-sheet: 0 -20px 50px rgba(0, 0, 0, 0.5);
+  --shadow-primary: 0 10px 24px rgba(142, 79, 184, 0.4);
+  --shadow-primary-lg: 0 12px 26px rgba(142, 79, 184, 0.45);
+  --shadow-die: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-checker: 0 2px 5px rgba(0, 0, 0, 0.45);
+  --shadow-well: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+  --glow-lilac: 0 0 16px 3px rgba(217, 184, 255, 0.7);
+  --glow-gold: 0 0 14px 2px rgba(232, 200, 114, 0.55);
+  --glow-gold-lg: 0 0 50px rgba(232, 200, 114, 0.4);
+  --glow-purple: 0 0 34px rgba(142, 79, 184, 0.45);
+  --shadow-toast: 0 8px 20px rgba(0, 0, 0, 0.5);
+
+  /* ---- radii ---- */
+  --r-pill: 999px;
+  --r-device: 34px;
+  --r-sheet: 28px;
+  --r-22: 22px;
+  --r-20: 20px;
+  --r-18: 18px;
+  --r-16: 16px;
+  --r-14: 14px;
+  --r-12: 12px;
+  --r-8: 8px;
+  --r-7: 7px;
+
+  /* ---- type ---- */
+  --font-head: 'Fredoka', 'Inter', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* ---- board metrics ---- */
+  --point-h: clamp(150px, 22.5vh, 190px);
+  --checker: 28px;
+  --checker-rim: 3px;
+  --checker-overlap: -15px;
+  --stack-pad: 26px;
+  --tray-w: 36px;
+
+  /* ---- motion ---- */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --t-move: 180ms;
+  --t-sheet: 260ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --t-move: 1ms;
+    --t-sheet: 1ms;
+  }
+}
