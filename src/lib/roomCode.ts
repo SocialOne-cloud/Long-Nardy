@@ -1,22 +1,16 @@
-/** Codes read out loud over the phone, so no ambiguous letters or words. */
-const WORDS = [
-  'VELVET', 'ORCHID', 'AMBER', 'COMET', 'PLUM', 'LILAC', 'SATIN', 'CANDY',
-  'MOCHA', 'HONEY', 'IVORY', 'CEDAR', 'OPAL', 'PEONY', 'CORAL', 'MANGO',
-  'SABLE', 'TULIP', 'FIG', 'CLOVE', 'JASPER', 'MAPLE', 'AZURE', 'BERRY',
-  'COCOA', 'DAHLIA', 'ELDER', 'FENNEL', 'GINGER', 'HAZEL', 'INDIGO', 'JUNIPER',
-  'KUMQUAT', 'LOTUS', 'MYRTLE', 'NUTMEG', 'OLIVE', 'POPPY', 'QUINCE', 'ROSE',
-];
+/** Three digits: short enough to say down the phone and to type once. */
+export const CODE_LENGTH = 3;
 
 export function makeRoomCode(): string {
-  const word = WORDS[Math.floor(Math.random() * WORDS.length)];
-  const digits = 10 + Math.floor(Math.random() * 90);
-  return `${word}-${digits}`;
+  return String(100 + Math.floor(Math.random() * 900));
 }
 
 export function normaliseCode(input: string): string {
-  const clean = input.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
-  const match = clean.match(/^([A-Z]+)(\d{1,2})$/);
-  return match ? `${match[1]}-${match[2]}` : clean;
+  return input.replace(/\D/g, '').slice(0, CODE_LENGTH);
+}
+
+export function isCompleteCode(input: string): boolean {
+  return normaliseCode(input).length === CODE_LENGTH;
 }
 
 export function inviteLink(code: string): string {

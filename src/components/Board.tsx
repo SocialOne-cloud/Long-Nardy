@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef, useState } from 'react';
 import type { GameState, Move, MoveTarget, Player } from '../engine';
 import { ownPos } from '../engine';
 import { Point } from './Point';
+import { faceForPoint } from '../lib/faces';
 import { BearOffTray } from './BearOffTray';
 import type { Profile } from '../state/types';
 
@@ -146,7 +147,16 @@ export function Board({
                 '--dy': `${flight.dy}px`,
               } as React.CSSProperties
             }
-          />
+          >
+            <span
+              className="checker__photo"
+              style={{
+                backgroundImage: `url(${
+                  players[flight.owner].photo ?? faceForPoint(flight.owner, lastMove?.from ?? 0)
+                })`,
+              }}
+            />
+          </span>
         )}
       </div>
     </div>

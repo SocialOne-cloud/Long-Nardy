@@ -69,7 +69,7 @@ game and tap **Reset series score**. Both players see it immediately.
 **A whole room** — board, series, profiles and all — from the Firebase console:
 
 1. **Build → Realtime Database → Data**.
-2. Expand `rooms`, find the code (for example `VELVET-42`).
+2. Expand `rooms`, find the code (for example `382`).
 3. Hover the node, click the **⋮** menu and choose **Delete**.
 
 The next person to use that code gets a brand new table. If either of you still
@@ -148,8 +148,13 @@ compressed to a JPEG, then stored as base64 in the room record — usually well
 under 15 KB, no Firebase Storage needed.
 
 Each checker is that player's photo inside a thick coloured rim. Only the top
-checker of a stack carries the photo, with a gold badge for the count. Without a
-photo you get a plain checker with the player's initial.
+checker of a stack carries the photo, with a gold badge for the count.
+
+Without a photo you get **the cast** — the caricature crops from the design
+handoff, one set per side, in `public/faces`. Each point draws a different cast
+member, so the whole set spreads across the board and a side looks like itself
+before anyone has uploaded anything. Swap the files in `public/faces` for your
+own set if you like; `src/lib/faces.ts` holds how many there are per side.
 
 The win message on the victory screen is yours to edit, in **Settings → Win
 message**. Sound can be turned off in the same place; it is remembered per

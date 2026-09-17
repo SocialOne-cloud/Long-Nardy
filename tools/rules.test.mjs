@@ -13,7 +13,7 @@ import {
 import { ref, set, update, get } from 'firebase/database';
 import { readFileSync } from 'node:fs';
 
-const CODE = 'VELVET-42';
+const CODE = '382';
 const HOST = 'uid-host';
 const GUEST = 'uid-guest';
 const STRANGER = 'uid-stranger';

@@ -1,30 +1,29 @@
 import type { Player } from '../engine';
-import { initialOf } from '../lib/image';
+import { faceForPoint } from '../lib/faces';
 
 interface CheckerProps {
   owner: Player;
+  /** The player's own photo, or null to fall back to the cast. */
   photo: string | null;
-  name: string;
-  /** Only the top checker of a stack carries the photo and the count badge. */
+  /** Only the top checker of a stack carries a face and the count badge. */
   top: boolean;
   count: number;
   row: 'top' | 'bottom';
   index: number;
+  /** Absolute point index, which picks this point's cast member. */
+  abs: number;
 }
 
-export function Checker({ owner, photo, name, top, count, row, index }: CheckerProps) {
-  const showBadge = top && count > 1;
+export function Checker({ owner, photo, top, count, row, index, abs }: CheckerProps) {
+  const face = photo ?? faceForPoint(owner, abs);
 
   return (
     <div
       className={`checker checker--${owner} checker--${row}`}
       style={{ zIndex: index + 1, animationDelay: `${index * 18}ms` }}
     >
-      {top && photo && (
-        <span className="checker__photo" style={{ backgroundImage: `url(${photo})` }} />
-      )}
-      {top && !photo && <span className="checker__initial">{initialOf(name)}</span>}
-      {showBadge && <span className="checker__badge">{count}</span>}
+      {top && <span className="checker__photo" style={{ backgroundImage: `url(${face})` }} />}
+      {top && count > 1 && <span className="checker__badge">{count}</span>}
     </div>
   );
 }

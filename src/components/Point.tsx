@@ -53,11 +53,11 @@ export function Point({
             key={k}
             owner={cell.owner as Player}
             photo={players[cell.owner as Player].photo}
-            name={players[cell.owner as Player].name}
             top={k === visible - 1}
             count={cell.count}
             row={row}
             index={k}
+            abs={abs}
           />
         ))}
       </span>

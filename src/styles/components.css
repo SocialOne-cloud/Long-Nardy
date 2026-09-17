@@ -455,19 +455,6 @@
   background-position: center;
 }
 
-.checker__initial {
-  font: 600 clamp(9px, calc(var(--checker) * 0.43), 12px) var(--font-body);
-  line-height: 1;
-}
-
-.checker--p1 .checker__initial {
-  color: var(--purple-600);
-}
-
-.checker--p2 .checker__initial {
-  color: var(--lilac);
-}
-
 .checker__badge {
   position: absolute;
   top: -5px;

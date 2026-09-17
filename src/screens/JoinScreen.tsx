@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { normaliseCode } from '../lib/roomCode';
+import { isCompleteCode, normaliseCode } from '../lib/roomCode';
 
 interface JoinScreenProps {
   initialCode: string;
@@ -11,7 +11,7 @@ interface JoinScreenProps {
 
 export function JoinScreen({ initialCode, onBack, onJoin, busy, error }: JoinScreenProps) {
   const [code, setCode] = useState(initialCode);
-  const ready = normaliseCode(code).length >= 4;
+  const ready = isCompleteCode(code);
 
   return (
     <div className="screen screen--setup">
@@ -23,7 +23,7 @@ export function JoinScreen({ initialCode, onBack, onJoin, busy, error }: JoinScr
       </header>
 
       <p className="subhead" style={{ marginTop: 0 }}>
-        Type the code she sent you, or just open her invite link.
+        Type the three digits she sent you, or just open her invite link.
       </p>
 
       <label className="field">
@@ -31,12 +31,15 @@ export function JoinScreen({ initialCode, onBack, onJoin, busy, error }: JoinScr
         <input
           className="field__input field__input--code"
           value={code}
-          onChange={(e) => setCode(e.target.value.toUpperCase())}
-          placeholder="VELVET-7"
-          autoCapitalize="characters"
+          onChange={(e) => setCode(normaliseCode(e.target.value))}
+          placeholder="382"
+          // Generous, so pasting "room 382" still filters down to the digits.
+          maxLength={16}
+          autoComplete="off"
           autoCorrect="off"
           spellCheck={false}
-          inputMode="text"
+          inputMode="numeric"
+          pattern="[0-9]*"
         />
       </label>
 

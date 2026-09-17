@@ -154,10 +154,12 @@ impossible move is refused by the receiving device rather than silently
 accepted. For a private table between two people who know each other, that is
 the right level of paranoia.
 
-Room codes are short and human-readable because you read them out loud. A room
-locks to the two devices that claim it, so the only window is between creating
-a table and her joining it. If you ever feel someone beat her to it, tap
-**Leave this table** and create another.
+Room codes are three digits, because you read them out loud. That is 900
+possible tables, so treat the code as a convenience rather than a secret: a
+room locks to the first two devices that claim it, and the only window in which
+anyone else could take the second seat is between you creating the table and
+her joining it. In practice you send the link and she opens it. If she ever
+reports the table is already full, tap **Leave this table** and make another.
 
 ## Free-plan limits
 
