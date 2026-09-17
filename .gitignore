@@ -25,3 +25,6 @@ database-debug.log
 
 # test output
 coverage/
+
+# typescript incremental build info
+*.tsbuildinfo

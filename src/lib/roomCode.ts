@@ -2,17 +2,20 @@
 const WORDS = [
   'VELVET', 'ORCHID', 'AMBER', 'COMET', 'PLUM', 'LILAC', 'SATIN', 'CANDY',
   'MOCHA', 'HONEY', 'IVORY', 'CEDAR', 'OPAL', 'PEONY', 'CORAL', 'MANGO',
+  'SABLE', 'TULIP', 'FIG', 'CLOVE', 'JASPER', 'MAPLE', 'AZURE', 'BERRY',
+  'COCOA', 'DAHLIA', 'ELDER', 'FENNEL', 'GINGER', 'HAZEL', 'INDIGO', 'JUNIPER',
+  'KUMQUAT', 'LOTUS', 'MYRTLE', 'NUTMEG', 'OLIVE', 'POPPY', 'QUINCE', 'ROSE',
 ];
 
 export function makeRoomCode(): string {
   const word = WORDS[Math.floor(Math.random() * WORDS.length)];
-  const digit = 1 + Math.floor(Math.random() * 9);
-  return `${word}-${digit}`;
+  const digits = 10 + Math.floor(Math.random() * 90);
+  return `${word}-${digits}`;
 }
 
 export function normaliseCode(input: string): string {
   const clean = input.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
-  const match = clean.match(/^([A-Z]+)(\d)$/);
+  const match = clean.match(/^([A-Z]+)(\d{1,2})$/);
   return match ? `${match[1]}-${match[2]}` : clean;
 }
 

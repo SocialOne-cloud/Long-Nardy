@@ -1,0 +1,100 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "rooms": {
+      "$code": {
+        // A room is readable while its second seat is open, so a guest can find it; once two players are seated it belongs to them alone.
+        ".read": "auth != null && (!data.exists() || !data.child('seats/p2').exists() || data.child('seats/p1').val() === auth.uid || data.child('seats/p2').val() === auth.uid)",
+
+        // Create a new room, act in a room you hold a seat in, or claim the open second seat.
+        ".write": "auth != null && (!data.exists() || data.child('seats/p1').val() === auth.uid || data.child('seats/p2').val() === auth.uid || (!data.child('seats/p2').exists() && newData.child('seats/p2').val() === auth.uid))",
+
+        ".validate": "newData.hasChildren(['seats', 'game'])",
+
+        "createdAt": { ".validate": "newData.isNumber()" },
+        "updatedAt": { ".validate": "newData.isNumber()" },
+
+        "seats": {
+          // Seats are write-once: nobody can be evicted or impersonated.
+          "p1": { ".validate": "newData.isString() && (!data.exists() || data.val() === newData.val())" },
+          "p2": { ".validate": "newData.isString() && (!data.exists() || data.val() === newData.val())" },
+          "$other": { ".validate": false }
+        },
+
+        "players": {
+          "$seat": {
+            // You may only edit the profile of the seat you hold.
+            ".validate": "($seat === 'p1' || $seat === 'p2') && newData.parent().parent().child('seats').child($seat).val() === auth.uid && newData.hasChildren(['name'])",
+            "name": { ".validate": "newData.isString() && newData.val().length <= 24" },
+            "team": { ".validate": "newData.isString() && newData.val().length <= 28" },
+            "photo": { ".validate": "newData.isString() && newData.val().length <= 40000" },
+            "$other": { ".validate": false }
+          }
+        },
+
+        "game": {
+          // Moves may only be written by the player whose turn it is. The opening roll-off is open to both, and a finished game is open so either can start the rematch.
+          ".validate": "!data.exists() || data.child('opening').exists() || data.child('winner').val() !== '' || newData.parent().child('seats').child(data.child('cur').val()).val() === auth.uid",
+
+          "board": {
+            "$point": { ".validate": "newData.isNumber() && newData.val() >= -15 && newData.val() <= 15" }
+          },
+          "off": {
+            "p1": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 15" },
+            "p2": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 15" },
+            "$other": { ".validate": false }
+          },
+          "cur": { ".validate": "newData.val() === 'p1' || newData.val() === 'p2'" },
+          "turnsTaken": {
+            "p1": { ".validate": "newData.isNumber() && newData.val() >= 0" },
+            "p2": { ".validate": "newData.isNumber() && newData.val() >= 0" },
+            "$other": { ".validate": false }
+          },
+          "headUsed": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 2" },
+          "winner": { ".validate": "newData.val() === '' || newData.val() === 'p1' || newData.val() === 'p2'" },
+          "mars": { ".validate": "newData.isBoolean()" },
+          "dice": {
+            "$die": { ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 6" }
+          },
+          "draft": {
+            "$move": {
+              ".validate": "newData.hasChildren(['f', 't', 'd'])",
+              "f": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 23" },
+              "t": { ".validate": "newData.val() === 'off' || (newData.isNumber() && newData.val() >= 0 && newData.val() <= 23)" },
+              "d": { ".validate": "newData.isNumber() && newData.val() >= 1 && newData.val() <= 6" },
+              "$other": { ".validate": false }
+            }
+          },
+          "opening": {
+            "p1": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 6" },
+            "p2": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 6" },
+            "tie": { ".validate": "newData.isBoolean()" },
+            "$other": { ".validate": false }
+          },
+          "$other": { ".validate": false }
+        },
+
+        "series": {
+          "p1": { ".validate": "newData.isNumber() && newData.val() >= 0" },
+          "p2": { ".validate": "newData.isNumber() && newData.val() >= 0" },
+          "$other": { ".validate": false }
+        },
+        "games": { ".validate": "newData.isNumber() && newData.val() >= 0" },
+        "last": {
+          "winner": { ".validate": "newData.val() === 'p1' || newData.val() === 'p2'" },
+          "mars": { ".validate": "newData.isBoolean()" },
+          "$other": { ".validate": false }
+        },
+        "winMessage": { ".validate": "newData.isString() && newData.val().length <= 200" },
+
+        "presence": {
+          "$uid": { ".validate": "$uid === auth.uid && newData.isBoolean()" }
+        },
+
+        "$other": { ".validate": false }
+      }
+    }
+  }
+}

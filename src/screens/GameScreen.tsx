@@ -151,7 +151,7 @@ export function GameScreen({
     dispatch({ type: 'confirm' });
   };
 
-  const turn = turnCopy({ local, opening, active, mine, room, her, rolling });
+  const turn = turnCopy({ local, opening, active, mine, room, rolling });
   const note = diceNote({ opening, stuck, live, game });
   const lastMove: Move | null = draft.length > 0 ? draft[draft.length - 1] : null;
 
@@ -325,7 +325,6 @@ function turnCopy({
   active,
   mine,
   room,
-  her,
   rolling,
 }: {
   local: boolean;
@@ -333,7 +332,6 @@ function turnCopy({
   active: Player;
   mine: boolean;
   room: RoomState;
-  her: Player;
   rolling: boolean;
 }): { label: string; tone: 'mine' | 'hers' } {
   if (opening !== null) {
@@ -348,10 +346,7 @@ function turnCopy({
     };
   }
   if (mine) return { label: 'Your turn', tone: 'mine' };
-  return {
-    label: rolling ? 'Her turn…' : `${room.players[her].name || 'Her'} turn`,
-    tone: 'hers',
-  };
+  return { label: rolling ? 'Her turn…' : 'Her turn', tone: 'hers' };
 }
 
 function diceNote({
