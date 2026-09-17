@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/nocturne-e80cd5c3-19f8-4f5f-83e8-543f043d8b46/styles.css">
+<script src="_ds/nocturne-e80cd5c3-19f8-4f5f-83e8-543f043d8b46/_ds_bundle.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #150A20; }
+  a, a:visited { color: #E8C872; text-decoration: none; }
+  a:hover { color: #F6F0FA; }
+</style>
+</helmet>
+
+<div style="width:390px;height:844px;border-radius:34px;overflow:hidden;position:relative;background:radial-gradient(120% 55% at 50% 0%,#3A1D52 0%,#1E0F2E 60%);color:#F6F0FA;font-family:Inter,sans-serif;box-shadow:0 26px 60px rgba(0,0,0,.6);user-select:none">
+
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;inset:0;padding:86px 28px 28px;display:flex;flex-direction:column;box-sizing:border-box">
+      <div style="position:absolute;width:420px;height:420px;left:-120px;top:280px;border-radius:50%;background:radial-gradient(circle,rgba(142,79,184,.32),transparent 70%)"></div>
+      <div style="position:relative;display:flex;flex-direction:column;height:100%">
+        <div style="font:400 13px Inter;letter-spacing:.24em;text-transform:uppercase;color:#E8C872">Bla bli blu</div>
+        <div style="font:500 56px/1.02 Fredoka,Inter,sans-serif;margin-top:14px">Нарды</div>
+        <div style="font:400 15px/1.5 Inter;color:#C9B4DE;margin-top:16px;max-width:290px">From Jzanam, to jzanam for jzanam.</div>
+
+        <div style="margin-top:44px;display:flex;flex-direction:column;gap:12px">
+          <div onClick="{{ startOnline }}" style="height:56px;border-radius:16px;background:linear-gradient(180deg,#8E4FB8,#6B3FA0);display:flex;align-items:center;justify-content:center;font:500 19px Fredoka,Inter,sans-serif;box-shadow:0 10px 24px rgba(142,79,184,.4);cursor:pointer" style-hover="filter:brightness(1.08)">Create game</div>
+          <div onClick="{{ startLocal }}" style="height:56px;border-radius:16px;border:1px solid #E8C872;display:flex;align-items:center;justify-content:center;font:500 19px Fredoka,Inter,sans-serif;color:#E8C872;cursor:pointer" style-hover="background:rgba(232,200,114,.1)">Play on one device</div>
+          <div style="height:46px;border-radius:14px;border:1px solid rgba(183,156,224,.28);display:flex;align-items:center;justify-content:center;font:400 15px Inter;color:#C9B4DE;cursor:pointer" style-hover="border-color:rgba(183,156,224,.6)">Join with code</div>
+        </div>
+
+        <div style="margin-top:30px;border-radius:20px;padding:18px;background:rgba(75,42,107,.55);border:1px solid rgba(183,156,224,.22)">
+          <div style="font:400 11px Inter;letter-spacing:.16em;text-transform:uppercase;color:#B79CE0">Series so far</div>
+          <div style="display:flex;align-items:center;gap:14px;margin-top:14px">
+            <div style="width:42px;height:42px;border-radius:50%;padding:2px;background:linear-gradient(140deg,#E8C872,#8E4FB8)">
+              <div style="width:100%;height:100%;border-radius:50%;overflow:hidden;position:relative;background:linear-gradient(#7a5f9a,#4a3162)">
+                <div style="position:absolute;left:50%;top:20%;transform:translateX(-50%);width:34%;height:34%;border-radius:50%;background:#E4D6F2"></div>
+                <div style="position:absolute;left:50%;bottom:-14%;transform:translateX(-50%);width:66%;height:44%;border-radius:50% 50% 0 0;background:#E4D6F2"></div>
+              </div>
+            </div>
+            <div style="font:500 30px Fredoka,Inter,sans-serif;color:#E8C872">{{ seriesLine }}</div>
+            <div style="width:42px;height:42px;border-radius:50%;padding:2px;background:linear-gradient(140deg,#D9B8FF,#5A2A82)">
+              <div style="width:100%;height:100%;border-radius:50%;overflow:hidden;position:relative;background:linear-gradient(#6b4f8c,#3d2754)">
+                <div style="position:absolute;left:50%;top:20%;transform:translateX(-50%);width:34%;height:34%;border-radius:50%;background:#EADCF6"></div>
+                <div style="position:absolute;left:50%;bottom:-14%;transform:translateX(-50%);width:66%;height:44%;border-radius:50% 50% 0 0;background:#EADCF6"></div>
+              </div>
+            </div>
+            <div style="margin-left:auto;text-align:right">
+              <div style="font:400 12px Inter;color:#C9B4DE">{{ namesLine }}</div>
+              <div style="font:400 12px Inter;color:#B79CE0">{{ lastResult }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:auto;display:flex;justify-content:center;gap:18px;font:400 12px Inter;color:#8E7BA6">
+          <div onClick="{{ openSetup }}" style="cursor:pointer">Player setup</div>
+          <div onClick="{{ openSettings }}" style="cursor:pointer">Settings</div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isSetup }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;padding:60px 24px 24px;display:flex;flex-direction:column;gap:20px;box-sizing:border-box">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div onClick="{{ goHome }}" style="width:34px;height:34px;border-radius:12px;border:1px solid rgba(183,156,224,.35);display:flex;align-items:center;justify-content:center;color:#B79CE0;font:400 18px Inter;cursor:pointer">‹</div>
+        <div style="font:500 24px Fredoka,Inter,sans-serif">Your side</div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;align-items:center;gap:12px">
+        <div style="width:118px;height:118px;border-radius:50%;padding:3px;background:linear-gradient(140deg,#E8C872,#8E4FB8);box-shadow:0 0 34px rgba(142,79,184,.45)">
+          <div style="width:100%;height:100%;border-radius:50%;overflow:hidden;position:relative;background:linear-gradient(#7a5f9a,#4a3162)">
+            <div style="position:absolute;left:50%;top:20%;transform:translateX(-50%);width:34%;height:34%;border-radius:50%;background:#E4D6F2"></div>
+            <div style="position:absolute;left:50%;bottom:-14%;transform:translateX(-50%);width:66%;height:44%;border-radius:50% 50% 0 0;background:#E4D6F2"></div>
+          </div>
+        </div>
+        <div style="display:flex;gap:10px">
+          <div style="height:34px;padding:0 14px;border-radius:12px;border:1px solid #E8C872;color:#E8C872;font:400 13px Inter;display:flex;align-items:center;cursor:pointer">Upload photo</div>
+          <div style="height:34px;padding:0 14px;border-radius:12px;border:1px solid rgba(183,156,224,.3);color:#C9B4DE;font:400 13px Inter;display:flex;align-items:center;cursor:pointer">Retake</div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="font:400 11px Inter;letter-spacing:.16em;text-transform:uppercase;color:#B79CE0">Display name</div>
+        <input value="{{ p1Name }}" onChange="{{ setP1Name }}" style="height:50px;border-radius:14px;background:rgba(75,42,107,.5);border:1px solid rgba(232,200,114,.55);padding:0 16px;font:400 16px Inter;color:#F6F0FA;outline:none;box-sizing:border-box">
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        <div style="font:400 11px Inter;letter-spacing:.16em;text-transform:uppercase;color:#B79CE0">Team name</div>
+        <input value="{{ p1Team }}" onChange="{{ setP1Team }}" style="height:50px;border-radius:14px;background:rgba(75,42,107,.5);border:1px solid rgba(183,156,224,.22);padding:0 16px;font:400 16px Inter;color:#F6F0FA;outline:none;box-sizing:border-box">
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font:400 11px Inter;letter-spacing:.16em;text-transform:uppercase;color:#B79CE0">Checkers</div>
+        <div style="display:flex;gap:12px">
+          <div style="flex:1;border-radius:16px;padding:14px;background:rgba(75,42,107,.5);border:1px solid #E8C872;display:flex;align-items:center;gap:12px">
+            <div style="width:34px;height:34px;border-radius:50%;background:#F6F0FA;border:3px solid #6B3FA0"></div>
+            <div>
+              <div style="font:500 14px Inter">Ivory</div>
+              <div style="font:400 11px Inter;color:#B79CE0">moves first</div>
+            </div>
+          </div>
+          <div style="flex:1;border-radius:16px;padding:14px;background:rgba(75,42,107,.5);border:1px solid rgba(183,156,224,.22);display:flex;align-items:center;gap:12px">
+            <div style="width:34px;height:34px;border-radius:50%;background:#5A2A82;border:3px solid #D9B8FF"></div>
+            <div>
+              <div style="font:500 14px Inter;color:#C9B4DE">Amethyst</div>
+              <div style="font:400 11px Inter;color:#B79CE0">{{ p2NameLabel }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div onClick="{{ setupDone }}" style="margin-top:auto;height:56px;border-radius:16px;background:linear-gradient(180deg,#8E4FB8,#6B3FA0);display:flex;align-items:center;justify-content:center;font:500 19px Fredoka,Inter,sans-serif;box-shadow:0 10px 24px rgba(142,79,184,.4);cursor:pointer">Save and continue</div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isWaiting }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;padding:78px 28px 28px;display:flex;flex-direction:column;box-sizing:border-box">
+      <div style="position:absolute;width:460px;height:460px;left:-35px;top:180px;border-radius:50%;background:radial-gradient(circle,rgba(142,79,184,.28),transparent 68%)"></div>
+      <div style="position:relative;display:flex;flex-direction:column;height:100%">
+        <div style="font:500 28px Fredoka,Inter,sans-serif">Table is set</div>
+        <div style="font:400 15px/1.5 Inter;color:#C9B4DE;margin-top:8px">Send her the code and the board opens for both of you.</div>
+
+        <div style="margin-top:34px;border-radius:22px;padding:22px;text-align:center;background:rgba(75,42,107,.55);border:1px solid rgba(232,200,114,.4)">
+          <div style="font:400 11px Inter;letter-spacing:.18em;text-transform:uppercase;color:#B79CE0">Room code</div>
+          <div style="font:500 44px Fredoka,Inter,sans-serif;color:#E8C872;letter-spacing:.14em;margin-top:8px">{{ roomCode }}</div>
+          <div onClick="{{ copyLink }}" style="margin-top:18px;height:48px;border-radius:14px;border:1px solid #E8C872;color:#E8C872;font:500 16px Fredoka,Inter,sans-serif;display:flex;align-items:center;justify-content:center;cursor:pointer">{{ copyLabel }}</div>
+        </div>
+
+        <div style="margin-top:26px;border-radius:20px;padding:18px;background:rgba(58,29,82,.6);border:1px solid rgba(183,156,224,.18);display:flex;align-items:center;gap:14px">
+          <div style="width:46px;height:46px;border-radius:50%;border:2px dashed rgba(217,184,255,.5);display:flex;align-items:center;justify-content:center;color:#D9B8FF;font:400 20px Fredoka,Inter,sans-serif">?</div>
+          <div>
+            <div style="font:500 15px Inter">{{ waitLine }}</div>
+            <div style="font:400 12px Inter;color:#B79CE0;margin-top:3px">Invite sent just now</div>
+          </div>
+        </div>
+
+        <div onClick="{{ joinAndPlay }}" style="margin-top:auto;height:56px;border-radius:16px;background:linear-gradient(180deg,#8E4FB8,#6B3FA0);display:flex;align-items:center;justify-content:center;font:500 19px Fredoka,Inter,sans-serif;cursor:pointer;box-shadow:0 10px 24px rgba(142,79,184,.4)">{{ joinLabel }}</div>
+        <div onClick="{{ goHome }}" style="margin-top:12px;font:400 13px Inter;color:#8E7BA6;text-align:center;cursor:pointer">Leave this table</div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isGame }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;padding:52px 0 18px;display:flex;flex-direction:column;box-sizing:border-box">
+
+      <div style="padding:0 16px;display:flex;align-items:center;gap:10px">
+        <div style="display:flex;align-items:center;gap:9px;flex:1">
+          <div style="position:relative;width:40px;height:40px;border-radius:50%;padding:2px;background:linear-gradient(140deg,#E8C872,#8E4FB8)">
+            <div style="width:100%;height:100%;border-radius:50%;overflow:hidden;position:relative;background:linear-gradient(#7a5f9a,#4a3162)">
+              <div style="position:absolute;left:50%;top:20%;transform:translateX(-50%);width:34%;height:34%;border-radius:50%;background:#E4D6F2"></div>
+              <div style="position:absolute;left:50%;bottom:-14%;transform:translateX(-50%);width:66%;height:44%;border-radius:50% 50% 0 0;background:#E4D6F2"></div>
+            </div>
+            <div style="position:absolute;right:-1px;bottom:-1px;width:11px;height:11px;border-radius:50%;background:#7BE0A8;border:2px solid #1E0F2E"></div>
+          </div>
+          <div>
+            <div style="font:500 14px Inter">{{ p1Name }}</div>
+            <div style="font:400 11px Inter;color:#B79CE0">{{ p1Team }}</div>
+          </div>
+        </div>
+        <div style="text-align:center">
+          <div style="font:500 22px Fredoka,Inter,sans-serif;color:#E8C872">{{ seriesLine }}</div>
+          <div style="font:400 9px Inter;letter-spacing:.14em;text-transform:uppercase;color:#8E7BA6">series</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:9px;flex:1;justify-content:flex-end">
+          <div style="text-align:right">
+            <div style="font:500 14px Inter">{{ p2Name }}</div>
+            <div style="font:400 11px Inter;color:#B79CE0">{{ p2Team }}</div>
+          </div>
+          <div style="position:relative;width:40px;height:40px;border-radius:50%;padding:2px;background:linear-gradient(140deg,#D9B8FF,#5A2A82)">
+            <div style="width:100%;height:100%;border-radius:50%;overflow:hidden;position:relative;background:linear-gradient(#6b4f8c,#3d2754)">
+              <div style="position:absolute;left:50%;top:20%;transform:translateX(-50%);width:34%;height:34%;border-radius:50%;background:#EADCF6"></div>
+              <div style="position:absolute;left:50%;bottom:-14%;transform:translateX(-50%);width:66%;height:44%;border-radius:50% 50% 0 0;background:#EADCF6"></div>
+            </div>
+            <div style="position:absolute;left:-1px;bottom:-1px;width:11px;height:11px;border-radius:50%;background:#7BE0A8;border:2px solid #1E0F2E"></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:12px;display:flex;justify-content:center">
+        <div style="padding:6px 16px;border-radius:999px;background:{{ turnBg }};border:1px solid {{ turnBorder }};font:500 14px Fredoka,Inter,sans-serif;color:{{ turnInk }}">{{ turnLabel }}</div>
+      </div>
+
+      <div style="margin-top:12px;padding:0 10px">
+        <div style="padding:6px;border-radius:16px;background:#3A1D52;box-shadow:0 14px 30px rgba(0,0,0,.5)">
+          <div style="border:1px solid #E8C872;border-radius:12px;padding:6px;display:flex;gap:6px;background:radial-gradient(150% 110% at 30% 0%,#5A3380,#4B2A6B 72%)">
+            <div style="flex:1;display:flex;flex-direction:column;gap:5px;position:relative">
+              <div style="position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(45deg,rgba(255,255,255,.028) 0 2px,transparent 2px 5px)"></div>
+              <div style="display:flex;gap:1px">
+                <sc-for list="{{ top }}" as="p" hint-placeholder-count="12">
+                  <div onClick="{{ p.tap }}" style="flex:1;position:relative;height:128px;display:flex;flex-direction:column;align-items:center;padding:12px 0 0;cursor:{{ p.cursor }}">
+                    <div style="position:absolute;inset:0;clip-path:polygon(0 0,100% 0,50% 100%);background:{{ p.fill }};opacity:.92"></div>
+                    <sc-if value="{{ p.glow }}" hint-placeholder-val="{{ false }}">
+                      <div style="position:absolute;inset:0;clip-path:polygon(0 0,100% 0,50% 100%);background:linear-gradient(180deg,rgba(217,184,255,.62),rgba(217,184,255,.05));box-shadow:0 0 16px 3px rgba(217,184,255,.7)"></div>
+                    </sc-if>
+                    <sc-if value="{{ showPointNumbers }}" hint-placeholder-val="{{ false }}">
+                      <div style="position:absolute;top:2px;left:0;right:0;text-align:center;font:400 8px Inter;color:rgba(246,240,250,.5)">{{ p.num }}</div>
+                    </sc-if>
+                    <sc-for list="{{ p.stack }}" as="c" hint-placeholder-count="0">
+                      <div style="box-sizing:border-box;width:23px;height:23px;border-radius:50%;position:relative;margin:{{ c.mg }};background:{{ c.fill }};border:2px solid {{ c.rim }};box-shadow:{{ c.shadow }}">
+                        <div style="position:absolute;inset:1px;border-radius:50%;background-image:{{ c.faceUrl }};background-size:cover;background-position:center"></div>
+                        <sc-if value="{{ c.badge }}" hint-placeholder-val="{{ false }}">
+                          <div style="position:absolute;top:-5px;right:-2px;min-width:15px;height:15px;border-radius:8px;background:#E8C872;color:#2A1440;font:600 10px Inter;display:flex;align-items:center;justify-content:center;padding:0 3px;box-sizing:border-box">{{ c.badge }}</div>
+                        </sc-if>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(232,200,114,.5),transparent)"></div>
+              <div style="display:flex;gap:1px">
+                <sc-for list="{{ bottom }}" as="p" hint-placeholder-count="12">
+                  <div onClick="{{ p.tap }}" style="flex:1;position:relative;height:128px;display:flex;flex-direction:column-reverse;align-items:center;padding:0 0 12px;cursor:{{ p.cursor }}">
+                    <div style="position:absolute;inset:0;clip-path:polygon(50% 0,100% 100%,0 100%);background:{{ p.fill }};opacity:.92"></div>
+                    <sc-if value="{{ p.glow }}" hint-placeholder-val="{{ false }}">
+                      <div style="position:absolute;inset:0;clip-path:polygon(50% 0,100% 100%,0 100%);background:linear-gradient(0deg,rgba(217,184,255,.62),rgba(217,184,255,.05));box-shadow:0 0 16px 3px rgba(217,184,255,.7)"></div>
+                    </sc-if>
+                    <sc-if value="{{ showPointNumbers }}" hint-placeholder-val="{{ false }}">
+                      <div style="position:absolute;bottom:2px;left:0;right:0;text-align:center;font:400 8px Inter;color:rgba(246,240,250,.5)">{{ p.num }}</div>
+                    </sc-if>
+                    <sc-for list="{{ p.stack }}" as="c" hint-placeholder-count="0">
+                      <div style="box-sizing:border-box;width:23px;height:23px;border-radius:50%;position:relative;margin:{{ c.mg }};background:{{ c.fill }};border:2px solid {{ c.rim }};box-shadow:{{ c.shadow }}">
+                        <div style="position:absolute;inset:1px;border-radius:50%;background-image:{{ c.faceUrl }};background-size:cover;background-position:center"></div>
+                        <sc-if value="{{ c.badge }}" hint-placeholder-val="{{ false }}">
+                          <div style="position:absolute;top:-5px;right:-2px;min-width:15px;height:15px;border-radius:8px;background:#E8C872;color:#2A1440;font:600 10px Inter;display:flex;align-items:center;justify-content:center;padding:0 3px;box-sizing:border-box">{{ c.badge }}</div>
+                        </sc-if>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+
+            <div style="width:36px;display:flex;flex-direction:column;gap:5px">
+              <div style="flex:1;border-radius:8px;background:rgba(30,15,46,.75);box-shadow:inset 0 2px 8px rgba(0,0,0,.5);padding:5px;display:flex;flex-direction:column;gap:2px">
+                <div style="font:400 8px Inter;letter-spacing:.06em;color:#8E7BA6;text-align:center">HER</div>
+                <sc-for list="{{ trayHer }}" as="t" hint-placeholder-count="0">
+                  <div style="height:5px;border-radius:3px;background:#5A2A82;border:1px solid #D9B8FF"></div>
+                </sc-for>
+                <div style="margin-top:auto;font:500 11px Fredoka,Inter,sans-serif;color:#D9B8FF;text-align:center">{{ offP2 }}</div>
+              </div>
+              <div onClick="{{ tapTray }}" style="flex:1;border-radius:8px;background:{{ trayBg }};box-shadow:{{ trayShadow }};padding:5px;display:flex;flex-direction:column;gap:2px;cursor:{{ trayCursor }}">
+                <div style="font:500 11px Fredoka,Inter,sans-serif;color:#F6F0FA;text-align:center">{{ offP1 }}</div>
+                <sc-for list="{{ trayYou }}" as="t" hint-placeholder-count="0">
+                  <div style="height:5px;border-radius:3px;background:#F6F0FA;border:1px solid #6B3FA0"></div>
+                </sc-for>
+                <div style="margin-top:auto;font:400 8px Inter;letter-spacing:.06em;color:#8E7BA6;text-align:center">YOU</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:10px;padding:0 20px;display:flex;align-items:center;gap:10px">
+        <div style="flex:1;display:flex;align-items:center;gap:7px">
+          <div style="width:13px;height:13px;border-radius:50%;background:#F6F0FA;border:2px solid #6B3FA0"></div>
+          <div style="font:400 12px Inter;color:#C9B4DE">Pips <span style="color:#F6F0FA;font-weight:500">{{ pipsP1 }}</span></div>
+        </div>
+        <div style="font:400 10px Inter;letter-spacing:.14em;text-transform:uppercase;color:#8E7BA6">pip count</div>
+        <div style="flex:1;display:flex;align-items:center;gap:7px;justify-content:flex-end">
+          <div style="font:400 12px Inter;color:#C9B4DE">Pips <span style="color:#F6F0FA;font-weight:500">{{ pipsP2 }}</span></div>
+          <div style="width:13px;height:13px;border-radius:50%;background:#5A2A82;border:2px solid #D9B8FF"></div>
+        </div>
+      </div>
+
+      <div style="margin-top:auto;padding:0 20px;display:flex;flex-direction:column;gap:10px">
+        <div style="border-radius:20px;padding:14px;background:rgba(58,29,82,.6);border:1px solid rgba(183,156,224,.2);display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:center;justify-content:center;gap:9px;min-height:48px">
+            <sc-for list="{{ dice }}" as="d" hint-placeholder-count="2">
+              <div style="width:44px;height:44px;border-radius:12px;background:linear-gradient(160deg,#4B2A6B,#3A1D52);border:1px solid {{ d.border }};display:flex;align-items:center;justify-content:center;font:500 23px Fredoka,Inter,sans-serif;color:{{ d.ink }};opacity:{{ d.opacity }};box-shadow:0 4px 12px rgba(0,0,0,.4)">{{ d.face }}</div>
+            </sc-for>
+            <sc-if value="{{ diceNote }}" hint-placeholder-val="{{ false }}">
+              <div style="font:400 12px Inter;color:#B79CE0;max-width:110px;text-wrap:pretty">{{ diceNote }}</div>
+            </sc-if>
+          </div>
+          <sc-if value="{{ showRoll }}" hint-placeholder-val="{{ true }}">
+            <div onClick="{{ roll }}" style="height:56px;border-radius:18px;background:{{ rollBg }};display:flex;align-items:center;justify-content:center;font:500 23px Fredoka,Inter,sans-serif;color:{{ rollInk }};box-shadow:{{ rollShadow }};cursor:{{ rollCursor }}">{{ rollLabel }}</div>
+          </sc-if>
+          <sc-if value="{{ showActions }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;gap:10px">
+              <div onClick="{{ undo }}" style="width:100px;height:50px;border-radius:16px;border:1px solid {{ undoBorder }};color:{{ undoInk }};font:500 16px Fredoka,Inter,sans-serif;display:flex;align-items:center;justify-content:center;cursor:{{ undoCursor }}">Undo</div>
+              <div onClick="{{ confirm }}" style="flex:1;height:50px;border-radius:16px;background:{{ confirmBg }};color:{{ confirmInk }};font:500 18px Fredoka,Inter,sans-serif;display:flex;align-items:center;justify-content:center;box-shadow:{{ confirmShadow }};cursor:{{ confirmCursor }}">{{ confirmLabel }}</div>
+            </div>
+          </sc-if>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;font:400 12px Inter;color:#8E7BA6">
+          <div onClick="{{ openRules }}" style="cursor:pointer">Rules</div>
+          <div>{{ footNote }}</div>
+          <div onClick="{{ openSettings }}" style="cursor:pointer">Settings</div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isWin }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;background:radial-gradient(110% 60% at 50% 12%,#5A2A82 0%,#1E0F2E 64%)">
+      <sc-for list="{{ confetti }}" as="k" hint-placeholder-count="34">
+        <div style="position:absolute;left:{{ k.left }};top:{{ k.top }};width:{{ k.w }};height:{{ k.h }};background:{{ k.color }};transform:rotate({{ k.rot }});border-radius:2px;opacity:{{ k.opacity }}"></div>
+      </sc-for>
+      <div style="position:relative;padding:86px 28px 28px;display:flex;flex-direction:column;align-items:center;height:100%;box-sizing:border-box">
+        <sc-if value="{{ isMars }}" hint-placeholder-val="{{ true }}">
+          <div style="padding:5px 14px;border-radius:999px;background:#E8C872;color:#2A1440;font:600 13px Fredoka,Inter,sans-serif;letter-spacing:.06em">MARS!</div>
+        </sc-if>
+        <div style="margin-top:20px;width:144px;height:144px;border-radius:50%;padding:4px;background:linear-gradient(140deg,#E8C872,#D9B8FF);box-shadow:0 0 50px rgba(232,200,114,.4)">
+          <div style="width:100%;height:100%;border-radius:50%;overflow:hidden;position:relative;background:{{ winnerAvatarBg }}">
+            <div style="position:absolute;left:50%;top:20%;transform:translateX(-50%);width:34%;height:34%;border-radius:50%;background:#EADCF6"></div>
+            <div style="position:absolute;left:50%;bottom:-14%;transform:translateX(-50%);width:66%;height:44%;border-radius:50% 50% 0 0;background:#EADCF6"></div>
+          </div>
+        </div>
+        <div style="margin-top:18px;font:500 36px Fredoka,Inter,sans-serif">{{ winnerLine }}</div>
+        <div style="font:400 14px Inter;color:#B79CE0;margin-top:4px">{{ winnerSub }}</div>
+        <div style="margin-top:20px;padding:16px 18px;border-radius:18px;background:rgba(75,42,107,.55);border:1px solid rgba(232,200,114,.35);text-align:center;font:400 15px/1.5 Inter;color:#F0E6F8">{{ winMessage }}</div>
+        <div style="margin-top:22px;display:flex;align-items:center;gap:16px">
+          <div style="text-align:center">
+            <div style="font:500 30px Fredoka,Inter,sans-serif;color:#E8C872">{{ seriesLine }}</div>
+            <div style="font:400 10px Inter;letter-spacing:.14em;text-transform:uppercase;color:#8E7BA6">series</div>
+          </div>
+          <div style="width:1px;height:38px;background:linear-gradient(180deg,transparent,rgba(232,200,114,.4),transparent)"></div>
+          <div style="text-align:center">
+            <div style="font:500 30px Fredoka,Inter,sans-serif">{{ gamesPlayed }}</div>
+            <div style="font:400 10px Inter;letter-spacing:.14em;text-transform:uppercase;color:#8E7BA6">games played</div>
+          </div>
+        </div>
+        <div style="margin-top:auto;width:100%;display:flex;flex-direction:column;gap:12px">
+          <div onClick="{{ rematch }}" style="height:58px;border-radius:18px;background:linear-gradient(180deg,#8E4FB8,#6B3FA0);display:flex;align-items:center;justify-content:center;font:500 22px Fredoka,Inter,sans-serif;box-shadow:0 12px 26px rgba(142,79,184,.45);cursor:pointer">Rematch</div>
+          <div onClick="{{ goHome }}" style="height:50px;border-radius:16px;border:1px solid #E8C872;color:#E8C872;font:500 17px Fredoka,Inter,sans-serif;display:flex;align-items:center;justify-content:center;cursor:pointer">Back to table</div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ settingsOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;background:rgba(21,10,32,.62)">
+      <div onClick="{{ closeSettings }}" style="position:absolute;inset:0"></div>
+      <div style="position:absolute;left:0;right:0;bottom:0;border-radius:28px 28px 0 0;background:linear-gradient(180deg,#3A1D52,#26133A);border-top:1px solid rgba(232,200,114,.45);padding:14px 22px 26px;box-shadow:0 -20px 50px rgba(0,0,0,.5)">
+        <div style="width:44px;height:4px;border-radius:2px;background:rgba(183,156,224,.45);margin:0 auto 16px"></div>
+        <div style="font:500 24px Fredoka,Inter,sans-serif">Settings</div>
+
+        <div style="margin-top:16px;display:flex;align-items:center;gap:14px">
+          <div style="width:56px;height:56px;border-radius:50%;padding:2px;background:linear-gradient(140deg,#E8C872,#8E4FB8)">
+            <div style="width:100%;height:100%;border-radius:50%;overflow:hidden;position:relative;background:linear-gradient(#7a5f9a,#4a3162)">
+              <div style="position:absolute;left:50%;top:20%;transform:translateX(-50%);width:34%;height:34%;border-radius:50%;background:#E4D6F2"></div>
+              <div style="position:absolute;left:50%;bottom:-14%;transform:translateX(-50%);width:66%;height:44%;border-radius:50% 50% 0 0;background:#E4D6F2"></div>
+            </div>
+          </div>
+          <div style="flex:1">
+            <div style="font:500 16px Inter">{{ p1Name }}</div>
+            <div style="font:400 12px Inter;color:#B79CE0;margin-top:2px">{{ p1Team }}</div>
+          </div>
+          <div style="height:34px;padding:0 14px;border-radius:12px;border:1px solid #E8C872;color:#E8C872;font:400 13px Inter;display:flex;align-items:center;cursor:pointer">Change photo</div>
+        </div>
+
+        <div style="margin-top:16px;display:flex;flex-direction:column;gap:10px">
+          <div style="height:48px;border-radius:14px;background:rgba(75,42,107,.5);border:1px solid rgba(183,156,224,.22);display:flex;align-items:center;padding:0 16px;gap:12px">
+            <div style="font:400 12px Inter;color:#B79CE0;width:86px">Display name</div>
+            <input value="{{ p1Name }}" onChange="{{ setP1Name }}" style="flex:1;background:transparent;border:none;outline:none;font:400 15px Inter;color:#F6F0FA">
+          </div>
+          <div style="height:48px;border-radius:14px;background:rgba(75,42,107,.5);border:1px solid rgba(183,156,224,.22);display:flex;align-items:center;padding:0 16px;gap:12px">
+            <div style="font:400 12px Inter;color:#B79CE0;width:86px">Team name</div>
+            <input value="{{ p1Team }}" onChange="{{ setP1Team }}" style="flex:1;background:transparent;border:none;outline:none;font:400 15px Inter;color:#F6F0FA">
+          </div>
+        </div>
+
+        <div style="margin-top:14px;display:flex;flex-direction:column">
+          <div onClick="{{ toggleSound }}" style="height:52px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(183,156,224,.14);cursor:pointer">
+            <div style="flex:1;font:400 15px Inter">Sound</div>
+            <div style="width:46px;height:26px;border-radius:14px;background:{{ soundTrack }};position:relative;box-shadow:inset 0 1px 4px rgba(0,0,0,.35)">
+              <div style="position:absolute;left:{{ soundKnobX }};top:3px;width:20px;height:20px;border-radius:50%;background:{{ soundKnob }}"></div>
+            </div>
+          </div>
+          <div onClick="{{ toggleNumbers }}" style="height:52px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(183,156,224,.14);cursor:pointer">
+            <div style="flex:1;font:400 15px Inter">Show point numbers</div>
+            <div style="width:46px;height:26px;border-radius:14px;background:{{ numTrack }};position:relative;box-shadow:inset 0 1px 4px rgba(0,0,0,.35)">
+              <div style="position:absolute;left:{{ numKnobX }};top:3px;width:20px;height:20px;border-radius:50%;background:{{ numKnob }}"></div>
+            </div>
+          </div>
+          <div onClick="{{ openRules }}" style="height:52px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(183,156,224,.14);cursor:pointer">
+            <div style="flex:1;font:400 15px Inter">Rules reference</div>
+            <div style="font:400 13px Inter;color:#B79CE0">Long nardy · head rule</div>
+            <div style="color:#E8C872;font:400 16px Inter">›</div>
+          </div>
+          <div onClick="{{ resetSeries }}" style="height:52px;display:flex;align-items:center;gap:12px;cursor:pointer">
+            <div style="flex:1;font:400 15px Inter;color:#E0A8A8">Reset series score</div>
+            <div style="color:#E8C872;font:400 16px Inter">›</div>
+          </div>
+        </div>
+
+        <div onClick="{{ closeSettings }}" style="margin-top:14px;height:50px;border-radius:16px;background:linear-gradient(180deg,#8E4FB8,#6B3FA0);display:flex;align-items:center;justify-content:center;font:500 18px Fredoka,Inter,sans-serif;cursor:pointer">Done</div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ rulesOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;background:rgba(21,10,32,.72)">
+      <div onClick="{{ closeRules }}" style="position:absolute;inset:0"></div>
+      <div style="position:absolute;left:0;right:0;bottom:0;max-height:78%;overflow:auto;border-radius:28px 28px 0 0;background:linear-gradient(180deg,#3A1D52,#26133A);border-top:1px solid rgba(232,200,114,.45);padding:14px 22px 26px;box-shadow:0 -20px 50px rgba(0,0,0,.5)">
+        <div style="width:44px;height:4px;border-radius:2px;background:rgba(183,156,224,.45);margin:0 auto 16px"></div>
+        <div style="font:500 24px Fredoka,Inter,sans-serif">Long nardy — house rules</div>
+        <div style="margin-top:14px;display:flex;flex-direction:column;gap:12px">
+          <sc-for list="{{ rules }}" as="r" hint-placeholder-count="6">
+            <div style="display:flex;gap:12px">
+              <div style="width:22px;height:22px;flex:none;border-radius:7px;background:rgba(232,200,114,.16);border:1px solid rgba(232,200,114,.5);color:#E8C872;font:500 12px Inter;display:flex;align-items:center;justify-content:center">{{ r.n }}</div>
+              <div>
+                <div style="font:500 14px Inter">{{ r.title }}</div>
+                <div style="font:400 13px/1.5 Inter;color:#C9B4DE;margin-top:3px;text-wrap:pretty">{{ r.body }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div onClick="{{ closeRules }}" style="margin-top:18px;height:50px;border-radius:16px;border:1px solid #E8C872;color:#E8C872;font:500 17px Fredoka,Inter,sans-serif;display:flex;align-items:center;justify-content:center;cursor:pointer">Close</div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;left:0;right:0;top:14px;display:flex;justify-content:center;pointer-events:none">
+      <div style="padding:8px 16px;border-radius:999px;background:rgba(30,15,46,.92);border:1px solid rgba(232,200,114,.45);font:400 13px Inter;color:#F0E6F8;box-shadow:0 8px 20px rgba(0,0,0,.5)">{{ toast }}</div>
+    </div>
+  </sc-if>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844},&quot;winMessage&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;“You owe me one breakfast in bed.”&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Win screen&quot;}}">
+const FACES_P1 = 11, FACES_P2 = 13;
+
+function freshBoard() {
+  const b = [];
+  for (let i = 0; i < 24; i++) b.push({ o: null, n: 0 });
+  b[23] = { o: 'p1', n: 15 };
+  b[11] = { o: 'p2', n: 15 };
+  return b;
+}
+
+class Component extends DCLogic {
+  state = {
+    screen: 'home', settings: false, rulesOpen: false, toast: null, copied: false,
+    p1: { name: 'Aaryan', team: 'Team Comet' },
+    p2: { name: 'Goku', team: 'Team Velvet' },
+    series: { p1: 3, p2: 2 }, games: 14,
+    mode: 'local', joined: false,
+    board: freshBoard(), off: { p1: 0, p2: 0 },
+    cur: 'p1', turnNo: 1, dice: [], headUsed: 0, sel: null, history: [],
+    winner: null, mars: false,
+    sound: true, numbers: false, thinking: false
+  };
+
+  componentWillUnmount() { this._dead = true; if (this._t) clearTimeout(this._t); }
+
+  // ---- geometry -------------------------------------------------------
+  ownPos(p, abs) { return p === 'p1' ? abs + 1 : ((abs - 12 + 24) % 24) + 1; }
+  absOf(p, pos) { return p === 'p1' ? pos - 1 : (pos - 1 + 12) % 24; }
+  headAbs(p) { return p === 'p1' ? 23 : 11; }
+
+  allHome(st, p) {
+    for (let i = 0; i < 24; i++) {
+      const c = st.board[i];
+      if (c.o === p && c.n > 0 && this.ownPos(p, i) > 6) return false;
+    }
+    return true;
+  }
+  maxPos(st, p) {
+    let m = 0;
+    for (let i = 0; i < 24; i++) {
+      const c = st.board[i];
+      if (c.o === p && c.n > 0) m = Math.max(m, this.ownPos(p, i));
+    }
+    return m;
+  }
+  pips(st, p) {
+    let s = 0;
+    for (let i = 0; i < 24; i++) {
+      const c = st.board[i];
+      if (c.o === p && c.n > 0) s += c.n * this.ownPos(p, i);
+    }
+    return s;
+  }
+  headAllowance(st) {
+    const live = st.dice.filter(d => !d.used);
+    const isDouble = st.dice.length === 4;
+    const v = st.dice.length ? st.dice[0].v : 0;
+    if (st.turnNo <= 2 && isDouble && (v === 3 || v === 4 || v === 6)) return 2;
+    return 1;
+  }
+
+  // ---- legality -------------------------------------------------------
+  targetsFrom(st, abs) {
+    const p = st.cur, res = { pts: {}, off: null };
+    const c = st.board[abs];
+    if (!c || c.o !== p || c.n === 0) return res;
+    if (abs === this.headAbs(p) && st.headUsed >= this.headAllowance(st)) return res;
+    const pos = this.ownPos(p, abs);
+    const home = this.allHome(st, p);
+    const top = this.maxPos(st, p);
+    for (let i = 0; i < st.dice.length; i++) {
+      const d = st.dice[i];
+      if (d.used) continue;
+      const np = pos - d.v;
+      if (np >= 1) {
+        const ab = this.absOf(p, np);
+        const t = st.board[ab];
+        if (!t.o || t.o === p) { if (res.pts[ab] === undefined) res.pts[ab] = i; }
+      } else if (home) {
+        if (np === 0 || pos === top) { if (res.off === null) res.off = i; }
+      }
+    }
+    return res;
+  }
+
+  movableSources(st) {
+    const out = [];
+    for (let i = 0; i < 24; i++) {
+      if (st.board[i].o !== st.cur || st.board[i].n === 0) continue;
+      const t = this.targetsFrom(st, i);
+      if (Object.keys(t.pts).length || t.off !== null) out.push(i);
+    }
+    return out;
+  }
+
+  // ---- mutation -------------------------------------------------------
+  snapshot(st) {
+    return {
+      board: st.board.map(c => ({ o: c.o, n: c.n })),
+      off: { p1: st.off.p1, p2: st.off.p2 },
+      dice: st.dice.map(d => ({ v: d.v, used: d.used })),
+      headUsed: st.headUsed
+    };
+  }
+
+  applyMove(st, fromAbs, target) {
+    const p = st.cur;
+    const t = this.targetsFrom(st, fromAbs);
+    let dieIdx;
+    if (target === 'off') dieIdx = t.off;
+    else dieIdx = t.pts[target];
+    if (dieIdx === undefined || dieIdx === null) return null;
+
+    const hist = st.history.concat([this.snapshot(st)]);
+    const board = st.board.map(c => ({ o: c.o, n: c.n }));
+    const off = { p1: st.off.p1, p2: st.off.p2 };
+    board[fromAbs].n -= 1;
+    if (board[fromAbs].n === 0) board[fromAbs].o = null;
+    if (target === 'off') off[p] += 1;
+    else { board[target].o = p; board[target].n += 1; }
+    const dice = st.dice.map((d, i) => i === dieIdx ? { v: d.v, used: true } : d);
+    const headUsed = st.headUsed + (fromAbs === this.headAbs(p) ? 1 : 0);
+    return { board, off, dice, headUsed, history: hist, sel: null };
+  }
+
+  // ---- actions --------------------------------------------------------
+  say(msg) {
+    this.setState({ toast: msg });
+    if (this._t) clearTimeout(this._t);
+    this._t = setTimeout(() => { if (!this._dead) this.setState({ toast: null }); }, 1800);
+  }
+
+  myTurn(st) { return st.mode === 'local' || st.cur === 'p1'; }
+
+  roll = () => {
+    const st = this.state;
+    if (st.dice.length || st.winner || !this.myTurn(st)) return;
+    this.setState(this.rollFor(st));
+  };
+
+  rollFor(st) {
+    const a = 1 + Math.floor(Math.random() * 6);
+    const b = 1 + Math.floor(Math.random() * 6);
+    const dice = a === b
+      ? [{ v: a, used: false }, { v: a, used: false }, { v: a, used: false }, { v: a, used: false }]
+      : [{ v: a, used: false }, { v: b, used: false }];
+    return { dice, headUsed: 0, sel: null, history: [] };
+  }
+
+  tapPoint(abs) {
+    const st = this.state;
+    if (st.winner || !st.dice.length || !this.myTurn(st) || st.thinking) return;
+    if (st.sel !== null) {
+      const t = this.targetsFrom(st, st.sel);
+      if (t.pts[abs] !== undefined) {
+        const next = this.applyMove(st, st.sel, abs);
+        if (next) { this.setState(next); this.checkWin({ ...st, ...next }); return; }
+      }
+      if (abs === st.sel) { this.setState({ sel: null }); return; }
+    }
+    const own = st.board[abs].o === st.cur && st.board[abs].n > 0;
+    if (!own) return;
+    const t = this.targetsFrom(st, abs);
+    if (!Object.keys(t.pts).length && t.off === null) {
+      this.say(abs === this.headAbs(st.cur) ? 'One checker off the head per turn' : 'No legal move from there');
+      return;
+    }
+    this.setState({ sel: abs });
+  }
+
+  tapTray = () => {
+    const st = this.state;
+    if (st.sel === null || !this.myTurn(st)) return;
+    const t = this.targetsFrom(st, st.sel);
+    if (t.off === null) return;
+    const next = this.applyMove(st, st.sel, 'off');
+    if (next) { this.setState(next); this.checkWin({ ...st, ...next }); }
+  };
+
+  undo = () => {
+    const st = this.state;
+    if (!st.history.length || !this.myTurn(st)) return;
+    const prev = st.history[st.history.length - 1];
+    this.setState({
+      board: prev.board, off: prev.off, dice: prev.dice,
+      headUsed: prev.headUsed, history: st.history.slice(0, -1), sel: null
+    });
+  };
+
+  confirm = () => {
+    const st = this.state;
+    if (!st.dice.length || !this.myTurn(st)) return;
+    const live = st.dice.some(d => !d.used);
+    if (live && this.movableSources(st).length) { this.say('Play your remaining dice'); return; }
+    this.endTurn(st);
+  };
+
+  endTurn(st) {
+    const cur = st.cur === 'p1' ? 'p2' : 'p1';
+    this.setState({ cur, dice: [], sel: null, headUsed: 0, history: [], turnNo: st.turnNo + 1 });
+    if (st.mode === 'online' && cur === 'p2') this.scheduleBot();
+  }
+
+  scheduleBot() {
+    if (this._t) clearTimeout(this._t);
+    this.setState({ thinking: true });
+    this._t = setTimeout(() => this.botStep(true), 900);
+  }
+
+  botStep(first) {
+    if (this._dead) return;
+    let st = this.state;
+    if (st.winner || st.cur !== 'p2') { this.setState({ thinking: false }); return; }
+    if (first) {
+      const r = this.rollFor(st);
+      st = { ...st, ...r };
+      this.setState(r);
+      this._t = setTimeout(() => this.botStep(false), 700);
+      return;
+    }
+    const srcs = this.movableSources(st);
+    const live = st.dice.some(d => !d.used);
+    if (!live || !srcs.length) {
+      this.setState({ thinking: false });
+      this.endTurn(st);
+      return;
+    }
+    // prefer bearing off, then the furthest checker
+    srcs.sort((a, b) => this.ownPos('p2', b) - this.ownPos('p2', a));
+    let done = null;
+    for (const s of srcs) {
+      const t = this.targetsFrom(st, s);
+      if (t.off !== null) { done = this.applyMove(st, s, 'off'); break; }
+    }
+    if (!done) {
+      const s = srcs[0];
+      const t = this.targetsFrom(st, s);
+      const keys = Object.keys(t.pts);
+      done = this.applyMove(st, s, Number(keys[0]));
+    }
+    if (!done) { this.setState({ thinking: false }); this.endTurn(st); return; }
+    this.setState(done);
+    const after = { ...st, ...done };
+    if (this.checkWin(after)) { this.setState({ thinking: false }); return; }
+    this._t = setTimeout(() => this.botStep(false), 620);
+  }
+
+  checkWin(st) {
+    const p = st.cur;
+    if (st.off[p] < 15) return false;
+    const other = p === 'p1' ? 'p2' : 'p1';
+    const mars = st.off[other] === 0;
+    const series = { ...st.series };
+    series[p] += mars ? 2 : 1;
+    this.setState({ winner: p, mars, screen: 'win', series, games: st.games + 1, dice: [], sel: null, thinking: false });
+    return true;
+  }
+
+  newGame(mode) {
+    if (this._t) clearTimeout(this._t);
+    this.setState({
+      board: freshBoard(), off: { p1: 0, p2: 0 }, cur: 'p1', turnNo: 1,
+      dice: [], headUsed: 0, sel: null, history: [], winner: null, mars: false,
+      mode, screen: 'game', thinking: false
+    });
+  }
+
+  // ---- view -----------------------------------------------------------
+  checker(st, own, isTop, count, top, fi) {
+    const p1 = own === 'p1';
+    const n = p1 ? FACES_P1 : FACES_P2;
+    return {
+      fill: p1 ? '#F6F0FA' : '#5A2A82',
+      rim: p1 ? '#6B3FA0' : '#D9B8FF',
+      faceUrl: 'url(faces/' + (p1 ? 'a' : 'b') + ((fi % n) + 1) + '.png)',
+      badge: top && count > 1 ? String(count) : null,
+      shadow: '0 2px 5px rgba(0,0,0,.45)',
+      mg: isTop ? '-5px 0 0 0' : '0 0 -5px 0'
+    };
+  }
+
+  row(st, isTop, glowSet, selAbs) {
+    const out = [];
+    for (let i = 0; i < 12; i++) {
+      const abs = isTop ? 12 + i : 11 - i;
+      const c = st.board[abs];
+      const light = abs % 2 === 0;
+      const stack = [];
+      const vis = Math.min(c.n, 5);
+      for (let k = 0; k < vis; k++) stack.push(this.checker(st, c.o, isTop, c.n, k === vis - 1, abs * 3 + k));
+      const selectable = c.o === st.cur && c.n > 0 && st.dice.length && this.myTurn(st);
+      out.push({
+        num: this.ownPos('p1', abs),
+        fill: selAbs === abs ? '#E8C872' : (light ? '#B79CE0' : '#8E4FB8'),
+        glow: glowSet.indexOf(abs) >= 0,
+        stack,
+        cursor: (selectable || glowSet.indexOf(abs) >= 0) ? 'pointer' : 'default',
+        tap: () => this.tapPoint(abs)
+      });
+    }
+    return out;
+  }
+
+  tray(n) { const a = []; for (let i = 0; i < Math.min(n, 6); i++) a.push({}); return a; }
+
+  renderVals() {
+    const st = this.state;
+    const sel = st.sel;
+    const t = sel !== null ? this.targetsFrom(st, sel) : { pts: {}, off: null };
+    const glow = Object.keys(t.pts).map(Number);
+    const mine = this.myTurn(st);
+    const live = st.dice.some(d => !d.used);
+    const srcs = st.dice.length ? this.movableSources(st) : [];
+    const stuck = st.dice.length > 0 && !srcs.length;
+    const canConfirm = mine && st.dice.length > 0 && (!live || stuck);
+
+    const cols = ['#E8C872', '#8E4FB8', '#D9B8FF', '#F6F0FA', '#B79CE0'];
+    const confetti = [];
+    for (let i = 0; i < 34; i++) {
+      const r = (i * 9301 + 49297) % 233280 / 233280;
+      const r2 = (i * 4691 + 7919) % 100 / 100;
+      confetti.push({
+        left: Math.round(r * 94) + '%', top: Math.round(r2 * 44) + '%',
+        w: (i % 3 === 0 ? 5 : 7) + 'px', h: (i % 4 === 0 ? 12 : 8) + 'px',
+        color: cols[i % cols.length], rot: Math.round(r * 360) + 'deg',
+        opacity: 0.35 + (i % 5) * 0.14
+      });
+    }
+
+    const winner = st.winner === 'p1' ? st.p1 : st.p2;
+    const loser = st.winner === 'p1' ? st.p2 : st.p1;
+    const diceNote = st.winner ? null
+      : (!st.dice.length ? null
+        : (stuck ? 'No legal move — pass'
+          : (st.dice.length === 4 ? 'Doubles — four moves' : (live ? 'Tap a checker, then a glowing point' : 'All dice played'))));
+
+    return {
+      isHome: st.screen === 'home', isSetup: st.screen === 'setup',
+      isWaiting: st.screen === 'waiting', isGame: st.screen === 'game', isWin: st.screen === 'win',
+      settingsOpen: st.settings, rulesOpen: st.rulesOpen, toast: st.toast,
+
+      p1Name: st.p1.name, p1Team: st.p1.team, p2Name: st.p2.name, p2Team: st.p2.team,
+      p2NameLabel: 'taken by ' + st.p2.name,
+      seriesLine: st.series.p1 + ' – ' + st.series.p2,
+      namesLine: st.p1.name + ' · ' + st.p2.name,
+      lastResult: st.winner ? ('last: ' + (st.mars ? 'Mars for ' : 'win for ') + winner.name) : 'last: Mars for ' + st.p2.name,
+      gamesPlayed: String(st.games),
+
+      roomCode: 'VELVET-7',
+      copyLabel: st.copied ? 'Link copied' : 'Copy invite link',
+      waitLine: st.joined ? st.p2.name + ' is here' : 'Waiting for her to join…',
+      joinLabel: st.joined ? 'Start playing' : 'Simulate her joining',
+
+      top: this.row(st, true, glow, sel),
+      bottom: this.row(st, false, glow, sel),
+      trayYou: this.tray(st.off.p1), trayHer: this.tray(st.off.p2),
+      offP1: String(st.off.p1), offP2: String(st.off.p2),
+      trayBg: t.off !== null ? 'rgba(232,200,114,.22)' : 'rgba(30,15,46,.75)',
+      trayShadow: t.off !== null ? '0 0 14px 2px rgba(232,200,114,.55)' : 'inset 0 2px 8px rgba(0,0,0,.5)',
+      trayCursor: t.off !== null ? 'pointer' : 'default',
+      tapTray: this.tapTray,
+
+      pipsP1: String(this.pips(st, 'p1') + st.off.p1 * 0),
+      pipsP2: String(this.pips(st, 'p2')),
+
+      turnLabel: st.cur === 'p1' ? (st.mode === 'local' ? 'Ivory to move' : 'Your turn') : (st.thinking ? 'Her turn…' : (st.mode === 'local' ? 'Amethyst to move' : 'Her turn')),
+      turnBg: st.cur === 'p1' ? 'rgba(232,200,114,.14)' : 'rgba(217,184,255,.12)',
+      turnBorder: st.cur === 'p1' ? '#E8C872' : 'rgba(217,184,255,.5)',
+      turnInk: st.cur === 'p1' ? '#E8C872' : '#D9B8FF',
+
+      dice: st.dice.length
+        ? st.dice.map(d => ({
+            face: String(d.v),
+            border: d.used ? 'rgba(183,156,224,.3)' : '#E8C872',
+            ink: d.used ? '#8E7BA6' : '#E8C872',
+            opacity: d.used ? 0.45 : 1
+          }))
+        : [{ face: '?', border: 'rgba(183,156,224,.3)', ink: '#8E7BA6', opacity: 0.5 },
+           { face: '?', border: 'rgba(183,156,224,.3)', ink: '#8E7BA6', opacity: 0.5 }],
+      diceNote,
+      showRoll: !st.dice.length,
+      showActions: st.dice.length > 0,
+      rollLabel: mine ? 'Roll' : 'Her roll',
+      rollBg: mine ? 'linear-gradient(180deg,#8E4FB8,#6B3FA0)' : 'rgba(75,42,107,.5)',
+      rollInk: mine ? '#F6F0FA' : '#8E7BA6',
+      rollShadow: mine ? '0 12px 26px rgba(142,79,184,.45)' : 'none',
+      rollCursor: mine ? 'pointer' : 'default',
+      roll: this.roll,
+      undo: this.undo,
+      undoBorder: st.history.length && mine ? 'rgba(183,156,224,.55)' : 'rgba(183,156,224,.18)',
+      undoInk: st.history.length && mine ? '#C9B4DE' : '#6E5C86',
+      undoCursor: st.history.length && mine ? 'pointer' : 'default',
+      confirm: this.confirm,
+      confirmLabel: stuck ? 'Pass turn' : 'Confirm move',
+      confirmBg: canConfirm ? 'linear-gradient(180deg,#8E4FB8,#6B3FA0)' : 'rgba(75,42,107,.45)',
+      confirmInk: canConfirm ? '#F6F0FA' : '#8E7BA6',
+      confirmShadow: canConfirm ? '0 10px 22px rgba(142,79,184,.4)' : 'none',
+      confirmCursor: canConfirm ? 'pointer' : 'default',
+      footNote: st.mode === 'local' ? 'One device' : 'Room VELVET-7',
+      showPointNumbers: st.numbers,
+
+      isMars: st.mars,
+      winnerLine: (winner ? winner.name : '') + ' wins',
+      winnerSub: (winner ? winner.team : '') + (st.mars ? ' · double win, nothing home for ' + (loser ? loser.name : '') : ' · single game'),
+      winMessage: this.props.winMessage ?? '“You owe me one breakfast in bed.”',
+      winnerAvatarBg: st.winner === 'p1' ? 'linear-gradient(#7a5f9a,#4a3162)' : 'linear-gradient(#6b4f8c,#3d2754)',
+      confetti,
+
+      rules: [
+        { n: '1', title: 'Direction and head', body: 'All fifteen checkers start on your head point, diagonally opposite hers. You move toward your own home quadrant and bear off from there.' },
+        { n: '2', title: 'One off the head', body: 'Only one checker may leave the head per turn. On the opening roll, 3-3, 4-4 and 6-6 let you take two.' },
+        { n: '3', title: 'No hitting', body: 'A point holding any of her checkers is closed to you. Nothing is ever sent back.' },
+        { n: '4', title: 'Blocking', body: 'Stacking is unlimited, so a wall of occupied points is the only way to slow her down.' },
+        { n: '5', title: 'Bearing off', body: 'Once all fifteen are home you may bear off. A larger die only works from your highest occupied point.' },
+        { n: '6', title: 'Mars', body: 'Bear off all fifteen before she gets a single checker off and the game counts double.' }
+      ],
+
+      soundTrack: st.sound ? '#8E4FB8' : 'rgba(183,156,224,.25)',
+      soundKnob: st.sound ? '#F6F0FA' : '#C9B4DE',
+      soundKnobX: st.sound ? '23px' : '3px',
+      numTrack: st.numbers ? '#8E4FB8' : 'rgba(183,156,224,.25)',
+      numKnob: st.numbers ? '#F6F0FA' : '#C9B4DE',
+      numKnobX: st.numbers ? '23px' : '3px',
+
+      startOnline: () => this.setState({ screen: 'waiting', mode: 'online', joined: false, copied: false }),
+      startLocal: () => this.newGame('local'),
+      joinAndPlay: () => { if (!this.state.joined) this.setState({ joined: true }); else this.newGame('online'); },
+      copyLink: () => { this.setState({ copied: true }); this.say('Invite link copied'); },
+      openSetup: () => this.setState({ screen: 'setup' }),
+      setupDone: () => this.setState({ screen: 'home' }),
+      goHome: () => this.setState({ screen: 'home', settings: false }),
+      openSettings: () => this.setState({ settings: true }),
+      closeSettings: () => this.setState({ settings: false }),
+      openRules: () => this.setState({ rulesOpen: true, settings: false }),
+      closeRules: () => this.setState({ rulesOpen: false }),
+      toggleSound: () => this.setState({ sound: !st.sound }),
+      toggleNumbers: () => this.setState({ numbers: !st.numbers }),
+      resetSeries: () => { this.setState({ series: { p1: 0, p2: 0 }, games: 0 }); this.say('Series reset'); },
+      rematch: () => this.newGame(st.mode),
+      setP1Name: e => this.setState({ p1: { ...st.p1, name: e.target.value } }),
+      setP1Team: e => this.setState({ p1: { ...st.p1, team: e.target.value } })
+    };
+  }
+}
+
+</script>
+</body>
+</html>
