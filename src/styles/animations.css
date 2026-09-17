@@ -1,10 +1,17 @@
+/*
+ * The design asks for a box-shadow halo, but the triangle is drawn with
+ * clip-path, which clips a box-shadow away entirely. A drop-shadow filter
+ * follows the clipped silhouette instead, so the glow actually reads.
+ */
 @keyframes pulse-glow {
   0%,
   100% {
-    box-shadow: 0 0 10px 1px rgba(217, 184, 255, 0.45);
+    filter: drop-shadow(0 0 4px rgba(217, 184, 255, 0.5));
+    opacity: 0.8;
   }
   50% {
-    box-shadow: var(--glow-lilac);
+    filter: drop-shadow(0 0 11px rgba(217, 184, 255, 0.95));
+    opacity: 1;
   }
 }
 

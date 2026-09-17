@@ -372,12 +372,12 @@
 .point__glow {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(217, 184, 255, 0.62), rgba(217, 184, 255, 0.05));
+  background: linear-gradient(180deg, rgba(217, 184, 255, 0.85), rgba(217, 184, 255, 0.12));
   animation: pulse-glow 1.6s ease-in-out infinite;
 }
 
 .point--bottom .point__glow {
-  background: linear-gradient(0deg, rgba(217, 184, 255, 0.62), rgba(217, 184, 255, 0.05));
+  background: linear-gradient(0deg, rgba(217, 184, 255, 0.85), rgba(217, 184, 255, 0.12));
 }
 
 .point__number {
