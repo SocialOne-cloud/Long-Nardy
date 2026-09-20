@@ -744,10 +744,13 @@
   border-radius: var(--r-pill);
   background: rgba(30, 15, 46, 0.92);
   border: 1px solid rgba(232, 200, 114, 0.45);
-  font: 400 13px var(--font-body);
+  font: 400 13px/1.35 var(--font-body);
   color: var(--ink-soft);
   box-shadow: var(--shadow-toast);
   animation: toast-in 200ms var(--ease-out);
+  max-width: calc(100% - 32px);
+  text-align: center;
+  text-wrap: pretty;
 }
 
 /* ---------- confetti ---------- */

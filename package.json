@@ -11,7 +11,8 @@
     "test:watch": "vitest",
     "typecheck": "tsc -b --noEmit",
     "deploy": "npm run build && firebase deploy",
-    "test:rules": "firebase emulators:exec --only database \"node tools/rules.test.mjs\""
+    "test:rules": "firebase emulators:exec --only database \"node tools/rules.test.mjs\"",
+    "predeploy": "node tools/preflight.mjs"
   },
   "dependencies": {
     "firebase": "^11.3.1",

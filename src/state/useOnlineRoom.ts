@@ -84,11 +84,34 @@ function patchFor(
   }
 }
 
-function messageFor(error: unknown): string {
+/**
+ * Turns a Firebase failure into something that says what to go and fix.
+ * The database reports PERMISSION_DENIED while auth uses hyphenated codes,
+ * and either can arrive on `code` or buried in `message`, so match on both.
+ */
+export function messageFor(error: unknown, during: 'setup' | 'move' = 'move'): string {
   if (error instanceof RoomError) return error.message;
-  const code = (error as { code?: string })?.code ?? '';
-  if (code.includes('permission-denied')) return 'That move was refused by the table.';
-  if (code.includes('network')) return 'Lost the connection. Trying again…';
+  const raw = (error ?? {}) as { code?: string; message?: string };
+  const text = `${raw.code ?? ''} ${raw.message ?? ''}`.toLowerCase();
+
+  if (text.includes('admin-restricted-operation') || text.includes('operation-not-allowed')) {
+    return 'Turn on Anonymous sign-in in Firebase.';
+  }
+  if (
+    text.includes('configuration-not-found') ||
+    text.includes('api-key-not-valid') ||
+    text.includes('invalid-api-key')
+  ) {
+    return 'These Firebase settings do not match a live project.';
+  }
+  if (text.includes('permission_denied') || text.includes('permission-denied')) {
+    return during === 'setup'
+      ? 'Firebase refused that. Have the database rules been deployed?'
+      : 'That move was refused by the table.';
+  }
+  if (text.includes('network') || text.includes('unavailable')) {
+    return 'Lost the connection. Trying again…';
+  }
   return 'Something went wrong talking to the table.';
 }
 
@@ -136,7 +159,7 @@ export function useOnlineRoom() {
         setError(null);
       },
       (subscribeError) => {
-        setError(messageFor(subscribeError));
+        setError(messageFor(subscribeError, 'setup'));
         setStatus('error');
       },
     );
@@ -180,7 +203,7 @@ export function useOnlineRoom() {
         setMembership(next);
         return code;
       } catch (createError) {
-        setError(messageFor(createError));
+        setError(messageFor(createError, 'setup'));
         setStatus('error');
         throw createError;
       }
@@ -200,7 +223,7 @@ export function useOnlineRoom() {
         setMembership(next);
         return seat;
       } catch (joinError) {
-        setError(messageFor(joinError));
+        setError(messageFor(joinError, 'setup'));
         setStatus('error');
         throw joinError;
       }

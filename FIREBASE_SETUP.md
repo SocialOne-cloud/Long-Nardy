@@ -108,13 +108,17 @@ Now build and ship:
 npm run deploy
 ```
 
-That runs `npm run build` and then `firebase deploy`, which uploads two things:
+That first checks your settings, then runs `npm run build` and `firebase
+deploy`, which uploads two things:
 
 - **Hosting** — the built app from `dist/`
 - **Database rules** — `database.rules.json`
 
 When it finishes the CLI prints your **Hosting URL**, something like
 `https://long-nardy.web.app`. That is the link you send her.
+
+If anything is missing it stops before building and names what to fix, so a
+half-filled `.env.local` can never reach the web.
 
 To deploy only one part later:
 

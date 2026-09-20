@@ -50,9 +50,13 @@ Then, whenever you want to ship:
 npm run deploy
 ```
 
-That builds the app and runs `firebase deploy`, which uploads the site to
-Firebase Hosting and the security rules to the Realtime Database. The CLI
-prints the hosting URL when it finishes. Send her that link.
+That checks your Firebase settings, builds the app and runs `firebase deploy`,
+which uploads the site to Firebase Hosting and the security rules to the
+Realtime Database. The CLI prints the hosting URL when it finishes. Send her
+that link.
+
+If the settings are missing or still hold the example values, it stops before
+building and says which ones.
 
 To push one half only:
 
