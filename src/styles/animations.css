@@ -15,6 +15,7 @@
   }
 }
 
+/* Duration comes from --t-roll. */
 @keyframes tumble {
   0% {
     transform: translateY(0) rotate(0deg) scale(1);

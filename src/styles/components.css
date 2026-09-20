@@ -585,32 +585,51 @@
 .die {
   width: 46px;
   height: 46px;
+  flex: none;
   border-radius: var(--r-12);
-  background: var(--die-face);
+  background: linear-gradient(160deg, #ffffff, var(--ivory) 55%, #e4d8ef);
   border: 1px solid var(--gold);
-  color: var(--gold);
-  font: 500 23px var(--font-head);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   box-shadow: var(--shadow-die);
-  transition: opacity 180ms ease, border-color 180ms ease, color 180ms ease;
+  transition: opacity 180ms ease, border-color 180ms ease;
+}
+
+/* Nine slots; the filled ones carry a pip. */
+.die__face {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  width: 100%;
+  height: 100%;
+  padding: 7px;
+  box-sizing: border-box;
+}
+
+.die__pip {
+  place-self: center;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--purple-600);
+  box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.25);
 }
 
 .die--used {
   border-color: rgba(183, 156, 224, 0.3);
-  color: var(--text-dim);
-  opacity: 0.45;
+  opacity: 0.4;
+}
+
+.die--used .die__pip {
+  background: var(--text-dim);
 }
 
 .die--blank {
+  background: linear-gradient(160deg, var(--velvet), var(--plum));
   border-color: rgba(183, 156, 224, 0.3);
-  color: var(--text-dim);
-  opacity: 0.5;
+  opacity: 0.55;
 }
 
 .die--rolling {
-  animation: tumble 520ms ease-in-out;
+  animation: tumble var(--t-roll) ease-in-out;
   box-shadow: var(--shadow-die), var(--glow-gold);
 }
 

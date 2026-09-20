@@ -102,13 +102,15 @@
 
   /* ---- motion ---- */
   --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
-  --t-move: 180ms;
-  --t-sheet: 260ms;
+  --t-move: 130ms;
+  --t-roll: 260ms;
+  --t-sheet: 220ms;
 }
 
 @media (prefers-reduced-motion: reduce) {
   :root {
     --t-move: 1ms;
+    --t-roll: 1ms;
     --t-sheet: 1ms;
   }
 }

@@ -600,6 +600,25 @@
   flex: 1;
 }
 
+.settings__row--stacked {
+  height: auto;
+  min-height: 52px;
+  padding: 10px 0;
+  align-items: flex-start;
+}
+
+.settings__row--stacked > span:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.settings__sub {
+  font: 400 12px/1.4 var(--font-body);
+  color: var(--text-dim);
+  max-width: 210px;
+}
+
 .settings__value {
   font: 400 13px var(--font-body);
   color: var(--point-lavender);

@@ -111,6 +111,27 @@ anyone else, and a write to the game is rejected unless it comes from the player
 whose turn it currently is. See the end of
 [FIREBASE_SETUP.md](FIREBASE_SETUP.md) for the details and the trust model.
 
+## The pace
+
+A turn costs as few taps as the position allows:
+
+- **The dice roll themselves** when your turn comes round, and the turn hands
+  over on its own once they are spent — no Confirm tap unless you want one.
+- **Tapping a checker with one legal destination moves it** rather than asking
+  for a second tap. With more than one, the destinations glow and you choose.
+- **A forced move plays itself.** When the rules leave exactly one legal move on
+  the board it happens without a tap, so forced sequences run straight through.
+- **A turn with nothing playable passes itself**, after a beat long enough to
+  read why.
+- **Undo takes the turn back too.** Tapping it stops the automatic handover for
+  the rest of that turn, so you can rearrange and confirm by hand.
+
+A whole game between two people on one phone runs in about two minutes.
+
+If you would rather roll, confirm and pass yourself, turn off
+**Settings → Fast game**. Tapping a checker with a single destination still
+moves it; that one is not a speed setting, there is simply nothing to choose.
+
 ## The rules it plays
 
 Each player counts their own points 24 down to 1, with home at 1–6 and all

@@ -4,10 +4,12 @@ import { setSoundEnabled } from '../lib/sound';
 export interface DeviceSettings {
   sound: boolean;
   showPointNumbers: boolean;
+  /** Roll, play forced moves and hand the turn over without waiting for a tap. */
+  fast: boolean;
 }
 
 const KEY = 'nardy.settings';
-const DEFAULTS: DeviceSettings = { sound: true, showPointNumbers: false };
+const DEFAULTS: DeviceSettings = { sound: true, showPointNumbers: false, fast: true };
 
 function read(): DeviceSettings {
   try {

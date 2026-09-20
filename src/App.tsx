@@ -223,6 +223,8 @@ export function App() {
           seat={seat}
           opponentOnline={isOnline ? online.opponentOnline : true}
           showNumbers={settings.showPointNumbers}
+          fast={settings.fast}
+          paused={overlay !== 'none'}
           dispatch={dispatch}
           onToast={say}
           onOpenRules={() => setOverlay('rules')}

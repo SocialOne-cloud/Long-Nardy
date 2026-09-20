@@ -116,6 +116,15 @@ export function SettingsSheet({
           <span>Sound</span>
           <Toggle on={settings.sound} onChange={() => onToggle('sound')} label="Sound" />
         </div>
+        <div className="settings__row settings__row--stacked">
+          <span>
+            Fast game
+            <small className="settings__sub">
+              Rolls, plays forced moves and passes the turn on its own
+            </small>
+          </span>
+          <Toggle on={settings.fast} onChange={() => onToggle('fast')} label="Fast game" />
+        </div>
         <div className="settings__row">
           <span>Show point numbers</span>
           <Toggle

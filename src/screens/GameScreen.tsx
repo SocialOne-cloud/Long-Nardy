@@ -1,13 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Move, MoveTarget, Player } from '../engine';
 import {
   blockRuleRejections,
-  canEndTurn,
   headAbs,
   headAllowance,
-  isStuck,
-  legalTargetsFrom,
-  movableSources,
+  legalMoves,
   pipCount,
   rollDie,
   rollPair,
@@ -20,7 +17,19 @@ import type { RoomAction } from '../state/room';
 import type { RoomState } from '../state/types';
 import { play } from '../lib/sound';
 
-const ROLL_MS = 520;
+const ROLL_MS = 260;
+/**
+ * Fast-game beats. Each one is long enough to read as a deliberate action and
+ * short enough that a turn nobody has to think about costs well under a
+ * second of ceremony.
+ */
+const AUTO_ROLL_MS = 160;
+const AUTO_MOVE_MS = 170;
+const AUTO_CONFIRM_MS = 240;
+/** Longer, so "no legal move" is read before the turn passes. */
+const AUTO_PASS_MS = 550;
+const WIN_CONFIRM_MS = 300;
+
 const EMPTY_TARGETS = new Map<MoveTarget, number>();
 
 interface GameScreenProps {
@@ -28,6 +37,10 @@ interface GameScreenProps {
   seat: Player;
   opponentOnline: boolean;
   showNumbers: boolean;
+  /** Rolls, forced moves and turn handover play themselves. */
+  fast: boolean;
+  /** True while a sheet is open, so the game does not advance behind it. */
+  paused: boolean;
   dispatch: (action: RoomAction) => void;
   onToast: (message: string) => void;
   onOpenRules: () => void;
@@ -39,6 +52,8 @@ export function GameScreen({
   seat,
   opponentOnline,
   showNumbers,
+  fast,
+  paused,
   dispatch,
   onToast,
   onOpenRules,
@@ -46,6 +61,7 @@ export function GameScreen({
 }: GameScreenProps) {
   const [sel, setSel] = useState<number | null>(null);
   const [rolling, setRolling] = useState(false);
+  const [autoConfirm, setAutoConfirm] = useState(true);
   const rollTimer = useRef<number | null>(null);
 
   const game = useMemo(() => currentGame(room.game), [room.game]);
@@ -56,14 +72,45 @@ export function GameScreen({
   const her: Player = seat === 'p1' ? 'p2' : 'p1';
   const draft = room.game.draft;
 
-  const targets = sel !== null && mine ? legalTargetsFrom(game, sel) : EMPTY_TARGETS;
-  const movable = mine && game.dice.length > 0 ? movableSources(game) : [];
-  const stuck = isStuck(game);
+  // One pass over the rules per position; everything below reads off it.
+  const moves = useMemo(() => legalMoves(game), [game]);
+
+  const targetsFor = useCallback(
+    (from: number) => {
+      const out = new Map<MoveTarget, number>();
+      for (const move of moves) {
+        if (move.from !== from) continue;
+        const existing = out.get(move.to);
+        if (existing === undefined || move.die < existing) out.set(move.to, move.die);
+      }
+      return out;
+    },
+    [moves],
+  );
+
+  /** Distinct destinations, ignoring which die pays for them. */
+  const choices = useMemo(() => {
+    const seen = new Map<string, Move>();
+    for (const move of moves) {
+      const key = `${move.from}:${move.to}`;
+      const existing = seen.get(key);
+      if (!existing || move.die < existing.die) seen.set(key, move);
+    }
+    return [...seen.values()];
+  }, [moves]);
+
+  const targets = sel !== null && mine ? targetsFor(sel) : EMPTY_TARGETS;
+  const movable = mine ? [...new Set(moves.map((m) => m.from))] : [];
+  const rolled = game.dice.length > 0;
+  const stuck = rolled && game.winner === null && moves.length === 0;
   const live = game.dice.some((d) => !d.used);
-  const ready = canEndTurn(game);
+  const ready = rolled && (game.winner !== null || moves.length === 0);
 
   // Selection belongs to one position only.
   useEffect(() => setSel(null), [draft.length, game.cur, game.dice.length]);
+
+  // Each fresh roll re-arms the automatic handover that Undo switches off.
+  useEffect(() => setAutoConfirm(true), [game.cur, game.dice.length]);
 
   useEffect(
     () => () => {
@@ -72,43 +119,79 @@ export function GameScreen({
     [],
   );
 
-  // A winning move ends the game on its own — no confirm needed.
-  useEffect(() => {
-    if (game.winner !== null && room.game.base.winner === null && mine) {
-      const id = window.setTimeout(() => dispatch({ type: 'confirm' }), 420);
-      return () => window.clearTimeout(id);
-    }
-  }, [game.winner, room.game.base.winner, mine, dispatch]);
-
-  const startRollAnimation = (then: () => void) => {
+  const startRollAnimation = useCallback((then: () => void) => {
     play('dice');
     setRolling(true);
     rollTimer.current = window.setTimeout(() => {
       setRolling(false);
       then();
     }, ROLL_MS);
-  };
+  }, []);
 
-  const onRoll = () => {
+  const onRoll = useCallback(() => {
     if (!mine || rolling) return;
     if (opening !== null) {
-      startRollAnimation(() =>
-        dispatch({ type: 'openingRoll', seat: active, value: rollDie() }),
-      );
+      startRollAnimation(() => dispatch({ type: 'openingRoll', seat: active, value: rollDie() }));
       return;
     }
-    if (game.dice.length > 0 || game.winner !== null) return;
+    if (rolled || game.winner !== null) return;
     startRollAnimation(() => dispatch({ type: 'roll', values: rollPair() }));
-  };
+  }, [mine, rolling, opening, rolled, game.winner, active, dispatch, startRollAnimation]);
+
+  const makeMove = useCallback(
+    (move: Move) => {
+      play('checker');
+      setSel(null);
+      dispatch({ type: 'move', from: move.from, to: move.to, die: move.die });
+    },
+    [dispatch],
+  );
+
+  // A winning move ends the game on its own — no confirm needed.
+  useEffect(() => {
+    if (game.winner !== null && room.game.base.winner === null && mine) {
+      const id = window.setTimeout(() => dispatch({ type: 'confirm' }), WIN_CONFIRM_MS);
+      return () => window.clearTimeout(id);
+    }
+  }, [game.winner, room.game.base.winner, mine, dispatch]);
+
+  // ---- fast game: roll, play forced moves, and hand over by itself ----
+
+  const needsOpeningRoll = opening !== null && (opening.tie || opening[active] === null);
+  const auto = fast && mine && !paused;
+
+  useEffect(() => {
+    if (!auto || rolling || game.winner !== null) return;
+    if (!needsOpeningRoll && (opening !== null || rolled)) return;
+    const id = window.setTimeout(onRoll, AUTO_ROLL_MS);
+    return () => window.clearTimeout(id);
+  }, [auto, rolling, game.winner, needsOpeningRoll, opening, rolled, onRoll]);
+
+  // With one legal move on the whole board there is nothing to decide.
+  useEffect(() => {
+    if (!auto || rolling || !rolled || game.winner !== null) return;
+    if (choices.length !== 1) return;
+    const id = window.setTimeout(() => makeMove(choices[0]), AUTO_MOVE_MS);
+    return () => window.clearTimeout(id);
+  }, [auto, rolling, rolled, game.winner, choices, makeMove]);
+
+  useEffect(() => {
+    if (!auto || rolling || !autoConfirm) return;
+    if (!ready || game.winner !== null) return;
+    const id = window.setTimeout(
+      () => dispatch({ type: 'confirm' }),
+      stuck ? AUTO_PASS_MS : AUTO_CONFIRM_MS,
+    );
+    return () => window.clearTimeout(id);
+  }, [auto, rolling, autoConfirm, ready, stuck, game.winner, dispatch]);
 
   const tapPoint = (abs: number) => {
-    if (!mine || game.winner !== null || game.dice.length === 0) return;
+    if (!mine || game.winner !== null || !rolled) return;
 
     if (sel !== null) {
       const die = targets.get(abs);
       if (die !== undefined) {
-        play('checker');
-        dispatch({ type: 'move', from: sel, to: abs, die });
+        makeMove({ from: sel, to: abs, die });
         return;
       }
       if (abs === sel) {
@@ -120,7 +203,7 @@ export function GameScreen({
     const cell = game.board[abs];
     if (cell.owner !== game.cur || cell.count === 0) return;
 
-    const options = legalTargetsFrom(game, abs);
+    const options = targetsFor(abs);
     if (options.size === 0) {
       if (abs === headAbs(game.cur) && game.headUsed >= headAllowance(game)) {
         onToast('One checker off the head per turn');
@@ -131,6 +214,14 @@ export function GameScreen({
       }
       return;
     }
+
+    // Nowhere else to go: take the move rather than asking for a second tap.
+    if (options.size === 1) {
+      const [to, die] = [...options][0];
+      makeMove({ from: abs, to, die });
+      return;
+    }
+
     setSel(abs);
   };
 
@@ -138,8 +229,13 @@ export function GameScreen({
     if (sel === null) return;
     const die = targets.get('off');
     if (die === undefined) return;
-    play('checker');
-    dispatch({ type: 'move', from: sel, to: 'off', die });
+    makeMove({ from: sel, to: 'off', die });
+  };
+
+  const undo = () => {
+    // Taking a move back means you want the turn back too.
+    setAutoConfirm(false);
+    dispatch({ type: 'undo' });
   };
 
   const confirm = () => {
@@ -152,7 +248,7 @@ export function GameScreen({
   };
 
   const turn = turnCopy({ local, opening, active, mine, room, rolling });
-  const note = diceNote({ opening, stuck, live, game });
+  const note = diceNote({ opening, stuck, live, rolled, winner: game.winner, dice: game.dice.length });
   const lastMove: Move | null = draft.length > 0 ? draft[draft.length - 1] : null;
 
   const scoreFor = (p: Player) => room.players[p];
@@ -253,7 +349,7 @@ export function GameScreen({
             {note && <p className="controls__note">{note}</p>}
           </div>
 
-          {opening !== null || game.dice.length === 0 ? (
+          {opening !== null || !rolled ? (
             <button
               type="button"
               className={`btn btn--roll ${mine ? '' : 'is-inert'}`}
@@ -268,7 +364,7 @@ export function GameScreen({
                 type="button"
                 className="btn btn--undo"
                 disabled={!mine || draft.length === 0}
-                onClick={() => dispatch({ type: 'undo' })}
+                onClick={undo}
               >
                 Undo
               </button>
@@ -353,21 +449,21 @@ function diceNote({
   opening,
   stuck,
   live,
-  game,
+  rolled,
+  winner,
+  dice,
 }: {
   opening: RoomState['game']['opening'];
   stuck: boolean;
   live: boolean;
-  game: ReturnType<typeof currentGame>;
+  rolled: boolean;
+  winner: Player | null;
+  dice: number;
 }): string | null {
   if (opening !== null) return opening.tie ? 'Same number — go again' : 'Higher die goes first';
-  if (game.winner !== null) return null;
-  if (game.dice.length === 0) return null;
+  if (winner !== null || !rolled) return null;
   if (stuck) return 'No legal move — pass';
   if (!live) return 'All dice played';
-  const remaining = game.dice.filter((d) => !d.used).length;
-  if (game.dice.length === 4) {
-    return remaining === 4 ? 'Doubles — four moves' : `${remaining} left to play`;
-  }
-  return 'Tap a checker, then a glowing point';
+  if (dice === 4) return 'Doubles — four moves';
+  return 'Tap a checker';
 }
