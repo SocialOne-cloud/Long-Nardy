@@ -120,10 +120,10 @@ whose turn it currently is. See the end of
 A turn costs as few taps as the position allows:
 
 - **Tap the dice to throw them.** They sit lit and nudging while the throw is
-  yours; the Roll button underneath does the same thing.
-- **Or let them roll themselves.** Half a second after your turn comes round
-  they throw on their own, and the turn hands over once they are spent — no
-  Confirm tap unless you want one.
+  yours; the Roll button underneath does the same thing. Every roll is yours
+  to make — nothing throws the dice for you.
+- **The turn hands over once the dice are spent**, with no Confirm tap unless
+  you want one.
 - **Tapping a checker with one legal destination moves it** rather than asking
   for a second tap. With more than one, the destinations glow and you choose.
 - **A forced move plays itself.** When the rules leave exactly one legal move on
@@ -135,7 +135,7 @@ A turn costs as few taps as the position allows:
 
 A whole game between two people on one phone runs in about two minutes.
 
-If you would rather roll, confirm and pass yourself, turn off
+If you would rather confirm and pass yourself too, turn off
 **Settings → Fast game**. Tapping a checker with a single destination still
 moves it; that one is not a speed setting, there is simply nothing to choose.
 

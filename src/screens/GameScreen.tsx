@@ -21,10 +21,8 @@ const ROLL_MS = 260;
 /**
  * Fast-game beats. Each one is long enough to read as a deliberate action and
  * short enough that a turn nobody has to think about costs well under a
- * second of ceremony.
+ * second of ceremony. Rolling is always the player's own doing.
  */
-/** Long enough to grab the dice yourself before they throw themselves. */
-const AUTO_ROLL_MS = 500;
 const AUTO_MOVE_MS = 170;
 const AUTO_CONFIRM_MS = 240;
 /** Longer, so "no legal move" is read before the turn passes. */
@@ -156,19 +154,12 @@ export function GameScreen({
     }
   }, [game.winner, room.game.base.winner, mine, dispatch]);
 
-  // ---- fast game: roll, play forced moves, and hand over by itself ----
+  // ---- fast game: play forced moves and hand over by itself ----
 
   const needsOpeningRoll = opening !== null && (opening.tie || opening[active] === null);
   const canRoll =
     mine && !rolling && game.winner === null && (opening !== null ? needsOpeningRoll : !rolled);
   const auto = fast && mine && !paused;
-
-  useEffect(() => {
-    if (!auto || rolling || game.winner !== null) return;
-    if (!needsOpeningRoll && (opening !== null || rolled)) return;
-    const id = window.setTimeout(onRoll, AUTO_ROLL_MS);
-    return () => window.clearTimeout(id);
-  }, [auto, rolling, game.winner, needsOpeningRoll, opening, rolled, onRoll]);
 
   // With one legal move on the whole board there is nothing to decide.
   useEffect(() => {

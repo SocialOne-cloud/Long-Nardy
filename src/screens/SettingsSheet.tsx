@@ -120,7 +120,7 @@ export function SettingsSheet({
           <span>
             Fast game
             <small className="settings__sub">
-              Rolls, plays forced moves and passes the turn on its own
+              Plays forced moves and hands the turn over on its own
             </small>
           </span>
           <Toggle on={settings.fast} onChange={() => onToggle('fast')} label="Fast game" />
