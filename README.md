@@ -119,8 +119,11 @@ whose turn it currently is. See the end of
 
 A turn costs as few taps as the position allows:
 
-- **The dice roll themselves** when your turn comes round, and the turn hands
-  over on its own once they are spent — no Confirm tap unless you want one.
+- **Tap the dice to throw them.** They sit lit and nudging while the throw is
+  yours; the Roll button underneath does the same thing.
+- **Or let them roll themselves.** Half a second after your turn comes round
+  they throw on their own, and the turn hands over once they are spent — no
+  Confirm tap unless you want one.
 - **Tapping a checker with one legal destination moves it** rather than asking
   for a second tap. With more than one, the destinations glow and you choose.
 - **A forced move plays itself.** When the rules leave exactly one legal move on

@@ -582,6 +582,20 @@
   gap: 10px;
 }
 
+/* The dice themselves are the roll control when the throw is yours. */
+.dice-row--tappable {
+  cursor: pointer;
+  padding: 4px;
+  margin: -4px;
+  border-radius: var(--r-14);
+  transition: transform 120ms var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dice-row--tappable:active {
+  transform: scale(0.94);
+}
+
 .die {
   width: 46px;
   height: 46px;
@@ -630,6 +644,20 @@
 
 .die--rolling {
   animation: tumble var(--t-roll) ease-in-out;
+  box-shadow: var(--shadow-die), var(--glow-gold);
+}
+
+/* Waiting to be thrown. Declared after the blank and rolling states so it
+   wins the border, opacity and shadow they set. */
+.die--ready {
+  animation: nudge 2.6s ease-in-out infinite;
+  border-color: var(--gold);
+  opacity: 1;
+  background: linear-gradient(160deg, #6a3f92, var(--velvet));
+  box-shadow: var(--shadow-die), 0 0 12px rgba(232, 200, 114, 0.4);
+}
+
+.dice-row--tappable:hover .die--ready {
   box-shadow: var(--shadow-die), var(--glow-gold);
 }
 

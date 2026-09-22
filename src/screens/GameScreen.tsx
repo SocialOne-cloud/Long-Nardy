@@ -23,7 +23,8 @@ const ROLL_MS = 260;
  * short enough that a turn nobody has to think about costs well under a
  * second of ceremony.
  */
-const AUTO_ROLL_MS = 160;
+/** Long enough to grab the dice yourself before they throw themselves. */
+const AUTO_ROLL_MS = 500;
 const AUTO_MOVE_MS = 170;
 const AUTO_CONFIRM_MS = 240;
 /** Longer, so "no legal move" is read before the turn passes. */
@@ -158,6 +159,8 @@ export function GameScreen({
   // ---- fast game: roll, play forced moves, and hand over by itself ----
 
   const needsOpeningRoll = opening !== null && (opening.tie || opening[active] === null);
+  const canRoll =
+    mine && !rolling && game.winner === null && (opening !== null ? needsOpeningRoll : !rolled);
   const auto = fast && mine && !paused;
 
   useEffect(() => {
@@ -337,11 +340,21 @@ export function GameScreen({
             <Dice
               dice={game.dice}
               rolling={rolling}
+              canRoll={canRoll}
+              onRoll={onRoll}
               opening={
                 opening
                   ? [
-                      { label: room.players.p1.name || 'Ivory', value: opening.p1 },
-                      { label: room.players.p2.name || 'Amethyst', value: opening.p2 },
+                      {
+                        label: room.players.p1.name || 'Ivory',
+                        value: opening.p1,
+                        active: active === 'p1',
+                      },
+                      {
+                        label: room.players.p2.name || 'Amethyst',
+                        value: opening.p2,
+                        active: active === 'p2',
+                      },
                     ]
                   : undefined
               }

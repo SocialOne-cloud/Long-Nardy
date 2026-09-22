@@ -15,6 +15,24 @@
   }
 }
 
+/* An occasional wobble on dice that are waiting to be thrown. */
+@keyframes nudge {
+  0%,
+  86%,
+  100% {
+    transform: rotate(0deg) translateY(0);
+  }
+  89% {
+    transform: rotate(-7deg) translateY(-2px);
+  }
+  93% {
+    transform: rotate(6deg) translateY(-1px);
+  }
+  96% {
+    transform: rotate(-3deg) translateY(0);
+  }
+}
+
 /* Duration comes from --t-roll. */
 @keyframes tumble {
   0% {
